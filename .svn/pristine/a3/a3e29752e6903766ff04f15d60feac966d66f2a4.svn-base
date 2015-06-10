@@ -1,0 +1,161 @@
+package it.gemmed.resource;
+
+import java.sql.Date;
+
+/**
+ * Rappresenta i dati dell'arbitro
+ * @author GEMMED
+ *
+ */
+public class Arbitro {
+	private final String nome;
+	private final String cognome;
+	private final Date data_nascita;
+	private String indirizzo;
+	private String telefono;
+	private final String email;
+	private String password;
+	private String tessera;
+	private Date scadenza_tessere;
+	
+	/**
+	 * Creatore completo Arbitro
+	 * @param nome
+	 * @param cognome
+	 * @param data_nascita
+	 * @param indirizzo
+	 * @param telefono
+	 * @param email
+	 * @param password
+	 * @param tessera
+	 * @param scadenza_tessere
+	 */
+	public Arbitro(String nome, String cognome, Date data_nascita, String indirizzo, String telefono,
+			String email, String password, String tessera, Date scadenza_tessere) {
+		super();
+		this.nome = nome;
+		this.cognome = cognome;
+		this.data_nascita = data_nascita;
+		this.indirizzo = indirizzo;
+		this.telefono = telefono;
+		this.email = email;
+		this.password = password;
+		this.tessera = tessera;
+		this.scadenza_tessere = scadenza_tessere;
+	}
+	/**
+	 * Creatore non completo Arbitro
+	 * @param nome
+	 * @param cognome
+	 * @param data_nascita
+	 * @param email
+	 * @param password
+	 */
+	public Arbitro(String nome, String cognome, Date data_nascita, 	String email, String password) {
+		super();
+		this.nome = nome;
+		this.cognome = cognome;
+		this.data_nascita = data_nascita;
+		this.email = email;
+		this.password = password;
+		
+	}
+
+	/**
+	 * @return the nome
+	 */
+	public String getNome() {
+		return nome;
+	}
+
+	/**
+	 * @return the cognome
+	 */
+	public String getCognome() {
+		return cognome;
+	}
+
+	/**
+	 * @return the data_nascita
+	 */
+	public Date getData_nascita() {
+		return data_nascita;
+	}
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+	
+	/**
+	 * @param the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	/**
+	 * @return the indirizzo
+	 */
+	public String getIndirizzo() {
+		return indirizzo;
+	}
+
+	/**
+	 * @param indirizzo the indirizzo to set
+	 */
+	public void setIndirizzo(String indirizzo) {
+		this.indirizzo = indirizzo;
+	}
+
+	/**
+	 * @return the telefono
+	 */
+	public String getTelefono() {
+		return telefono;
+	}
+
+	/**
+	 * @param telefono the telefono to set
+	 */
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	/**
+	 * @return the tessera
+	 */
+	public String getTessera() {
+		return tessera;
+	}
+
+	/**
+	 * @param tessera the tessera to set
+	 */
+	public void setTessera(String tessera) {
+		this.tessera = tessera;
+	}
+
+	/**
+	 * @return the scadenza_tessere
+	 */
+	public Date getScadenza_tessere() {
+		return scadenza_tessere;
+	}
+
+	/**
+	 * @param scadenza_tessere the scadenza_tessere to set
+	 */
+	public void setScadenza_tessere(Date scadenza_tessere) {
+		this.scadenza_tessere = scadenza_tessere;
+	}
+}

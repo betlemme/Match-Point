@@ -1,0 +1,14 @@
+package it.gemmed.resource;
+
+/**
+ * Vedere http://www.gotoquiz.com/web-coding/programming/java-programming/convert-between-java-enums-and-postgresql-enums/
+ * per la gestione degli enum
+ * @author manuel
+ *
+ */
+public enum Tiposuperficie {
+	terra_battuta,
+	sintetico,
+	erba,
+	cemento
+}

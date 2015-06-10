@@ -1,0 +1,84 @@
+package it.gemmed.database;
+
+import it.gemmed.resource.Arbitro;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+
+/**
+ * Fa l'update del profilo di  un arbitro, richiede il passaggio dell'arbitro modificato al costruttore.
+ * 
+ * @author GEMMED
+ * @version 0.1
+ */
+
+public class UpdateArbitroDatabase {
+	/**
+	 * The SQL statement to be executed
+	 * 
+	 * Attenzione al cast !!!!
+	 */
+	private static final String STATEMENT = "UPDATE arbitro SET nome= ?, cognome=?, data_nascita= ?, indirizzo= ?, telefono= ?, tessera= ?, scadenza_tessera= ?,  password= ?  WHERE email = ?";
+
+	/**
+	 * The connection to the database
+	 */
+	private final Connection con;
+
+	/**
+	 * The employee to be stored into the database
+	 */
+	private final Arbitro a;
+
+	/**
+	 * Creates a new object for storing an employee into the database.
+	 * 
+	 * @param con
+	 *            the connection to the database.
+	 * @param player
+	 *            the player to be stored into the database.
+	 */
+	public UpdateArbitroDatabase(final Connection con, final Arbitro t) {
+		this.con = con;
+		this.a = t;
+	}
+
+	/**
+	 * Stores a new employee into the database
+	 * 
+	 * @throws SQLException
+	 *             if any error occurs while storing the employee.
+	 */
+	public void updateArbitro() throws SQLException {
+
+		PreparedStatement pstmt = null;
+
+		try {
+			pstmt = con.prepareStatement(STATEMENT);
+			pstmt.setString(1, a.getNome());
+			pstmt.setString(2, a.getCognome());
+			pstmt.setDate(3, a.getData_nascita());
+			pstmt.setString(4, a.getIndirizzo());
+			pstmt.setString(5, a.getTelefono());
+			pstmt.setString(6, a.getTessera());
+			pstmt.setDate(7, a.getScadenza_tessere());
+			pstmt.setString(8, a.getPassword());
+			pstmt.setString(9, a.getEmail());
+			
+
+
+			pstmt.execute();
+
+		} finally {
+			if (pstmt != null) {
+				pstmt.close();
+			}
+
+			con.close();
+		}
+
+	}	
+
+}

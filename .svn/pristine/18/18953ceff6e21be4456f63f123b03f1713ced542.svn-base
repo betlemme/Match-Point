@@ -1,0 +1,117 @@
+package it.gemmed.database;
+
+/*
+ * Copyright 2014 University of Padua, Italy
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+import it.gemmed.resource.PartitaSingola;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+/**
+ * Creates a new employee into the database.
+ * 
+ * @author Nicola Ferro
+ * @version 1.00
+ */
+public class CreatePartitaDatabase {
+
+	/**
+	 * The SQL statement to be executed
+	 */
+	private static final String STATEMENT = "INSERT INTO partita_singola (numero_partita, torneo) VALUES (?, ?)";
+	
+	/**
+	 * The SQL statement to be executed
+	 */
+	private static final String STATEMENT2 = "INSERT INTO partita_singola (numero_partita, torneo, sfidantea, sfidanteb) VALUES (?, ?, ?, ?)";
+	
+	/**
+	 * The connection to the database
+	 */
+	private final Connection con;
+
+	/**
+	 * The employee to be stored into the database
+	 */
+	private final PartitaSingola partita;
+
+	/**
+	 * Creates a new object for storing an employee into the database.
+	 * 
+	 * @param con
+	 *            the connection to the database.
+	 * @param employee
+	 *            the employee to be stored into the database.
+	 */
+	public CreatePartitaDatabase(final Connection con, final PartitaSingola partita) {
+		this.con = con;
+		this.partita = partita;
+	}
+
+	/**
+	 * Stores a new employee into the database
+	 * 
+	 * @throws SQLException
+	 *             if any error occurs while storing the employee.
+	 */
+	public void createPartita() throws SQLException {
+
+		PreparedStatement pstmt = null;
+
+		try {
+			pstmt = con.prepareStatement(STATEMENT);
+			pstmt.setInt(1, partita.getNumeroPartita());
+			pstmt.setInt(2, partita.getTorneo());
+			
+			pstmt.execute();
+
+		} finally {
+			if (pstmt != null) {
+				pstmt.close();
+			}
+
+			con.close();
+		}
+
+	}
+	
+	public void createPartita(String A, String B) throws SQLException {
+
+		PreparedStatement pstmt = null;
+
+		try {
+			pstmt = con.prepareStatement(STATEMENT2);
+			pstmt.setInt(1, partita.getNumeroPartita());
+			pstmt.setInt(2, partita.getTorneo());
+			pstmt.setString(3, partita.getSfidanteA());
+			pstmt.setString(4, partita.getSfidanteB());
+			
+			pstmt.execute();
+
+		} finally {
+			if (pstmt != null) {
+				pstmt.close();
+			}
+
+			con.close();
+		}
+
+	}
+	
+}

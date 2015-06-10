@@ -1,0 +1,378 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Profilo federazione</title>
+<c:import url="/jsp/include/head.jsp"/>
+</head>
+
+  <body>
+      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="#">Match Point</a>
+	    </div>
+	
+	      <ul class="nav navbar-nav navbar-right">
+	        <li class="dropdown">
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><c:out value="${federazione.email}" /> <b class="caret"></b></a>
+	          <ul class="dropdown-menu">
+	            <li><a href="#">Profilo</a></li>
+	            <li class="divider"></li>
+	            <li><a href="#">Log Out</a></li>
+	          </ul>
+	        </li>
+	      </ul>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+    <div class="container" style="padding-top:60px">
+      <div class="row">
+
+        <!-- First Coloumn -->
+        <div class="col-md-1"></div>
+        <!-- Central Coloumn -->
+        <div class="col-md-10">
+          <!-- TITOLO -->
+          <div class="well">
+            <!-- <img src="Tim_Henman3.jpg" width="100%" height="100%"> -->
+            <center>
+              <h1>Federazione Italiana Tennis</h1>
+            </center>
+          </div>
+          <!-- MENU' -->
+          <div class="row">
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="active">
+                <a href="#Gen" data-toggle="tab" role="tab">Generale</a>
+              </li>
+              <li>
+                <a href="#Tess" data-toggle="tab" role="tab">  Gestione Tesserati</a>
+              </li>
+              <li>
+                <a href="#Circ" data-toggle="tab" role="tab"> Circoli</a>
+              </li>
+              <li>
+                <a href="#Torn" data-toggle="tab" role="tab"> Tornei</a>
+              </li>
+              <li>
+                <a href="#Arbi" data-toggle="tab" role="tab"> Arbitri</a>
+              </li>
+            </ul>
+          </div>
+          <!-- CONTAINER -->
+          <div class="tab-content">
+            <!-- GENERALE -->
+            <div class="tab-pane active" id="Gen">
+              <table cellpadding="5" cellspacing="10" class="contentpage" style="color:#000000; border-width:0px; border-style:Solid; height:50px; width:100%;">
+                <tbody>
+                  <tr>
+                    <td style="background-color:#ffffff">
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td style="vertical-align:center; background-color:#ffffff">
+                              <img src="iconPerson.png" width="100">
+                            </td>
+                            <td style="vertical-align:center; background-color:#ffffff">
+                              <span><span style="font-size: x-large"><strong>&nbsp; Dati personali</strong></span></span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table><br>
+                      <div>
+                        <center>
+                          <table cellspacing="0" cellpadding="4" border="0" id="Pers" style="color:#000000; border-color:#8080FF; border-width:1px; border-style:Solid; height:50px; width:600px; ">
+                            <tbody>
+                              <tr>
+                                <td style="background-color:#90EE90;font-weight:bold; width:300px; height:30px;">Utente</td>
+                                <td align="center" style="background-color:#ffffff; width:300px;">Federal1</td>
+                              </tr>
+                              <tr>
+                                <td style="background-color:#90EE90;font-weight:bold; width:300px; height:30px;">Nome</td>
+                                <td align="center" style="background-color:#ffffff; width:300px">Giacomo</td>
+                              </tr>
+                              <tr>
+                                <td style="background-color:#90EE90;font-weight:bold; width:300px; height:30px;">Cognome</td>
+                                <td align="center" style="background-color:#ffffff; width:300px">Sorato</td>
+                              </tr>
+                              <tr>
+                                <td style="background-color:#90EE90;font-weight:bold; width:300px; height:30px;">Indirizzo e-mail</td>
+                                <td align="center" style="background-color:#ffffff; width:300px"><c:out value="${federazione.email}" /></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </center>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table><br><br>
+              <img src="glyphicons_044_keys.png">
+              <a id="ChangePwd" class="start" href="userchangepwd.aspx"> Cambia la tua password</a><br><br>
+              <img src="glyphicons_066_tags.png">
+              <a id="ChangeName" disabled="disabled" class="start"> Cambia nome e cognome</a><br><br>
+              <img src="glyphicons_121_message_empty.png">
+              <a id="ChangeEmail" class="start" href="userchangeemail.aspx"> cambia il tuo indirizzo e-mail</a><br><br></div>
+            
+            <!-- TESSERATI -->
+            <div class="tab-pane" id="Tess">
+            <br>
+              <table>
+                <tbody>
+                  <tr>
+                    <td style="vertical-align:center; background-color:#ffffff">
+                      <img src="find1.png" width="100">
+                    </td>
+                    <td style="vertical-align:center; background-color:#ffffff">
+                      <span><span style="font-size: x-large"><strong>&nbsp; Ricerca Tesserato</strong></span></span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <br>
+              <center>
+                <form class="navbar-form" role="search">
+                  <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search" size="40">
+                  </div>
+                  <button type="submit" class="btn btn-success">Submit</button>
+                </form>
+                <br>
+                <div class="form-group">
+                  <table cellpadding="2" cellspacing="2" style="width:50%;">
+                    <tbody>
+                      <tr>
+                        <td style="vertical-align:center; background-color:#ffffff"><strong>Ricerca per:</strong></td>
+                        <td style="vertical-align:center; background-color:#ffffff">
+                          <div class="radio">
+                            <label>
+                              <input name="radio_choice" type="radio" value="0" checked>Nome</label>
+                          </div>
+                        </td>
+                        <td style="vertical-align:center; background-color:#ffffff">
+                          <div class="radio">
+                            <label>
+                              <input name="radio_choice" type="radio" value="1">Cognome</label>
+                          </div>
+                        </td>
+                        <td style="vertical-align:center; background-color:#ffffff">
+                          <div class="radio">
+                            <label>
+                              <input name="radio_choice" type="radio" value="2">Circolo</label>
+                          </div>
+                        </td>
+                        <td style="vertical-align:center; background-color:#ffffff">
+                          <div class="radio">
+                            <label>
+                              <input name="radio_choice" type="radio" value="3">N&deg; Tessera</label>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                </center>
+              </div>
+
+            <!-- CIRCOLI -->
+            <div class="tab-pane" id="Circ">
+              <br>
+              <table>
+                <tbody>
+                  <tr>
+                    <td style="vertical-align:center; background-color:#ffffff">
+                      <img src="find2.png" width="100">
+                    </td>
+                    <td style="vertical-align:center; background-color:#ffffff">
+                      <span><span style="font-size: x-large"><strong>&nbsp; Gestione Circoli</strong></span></span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <br>
+              <!-- Ricerca -->
+              <div>
+                <center>
+                  <form class="navbar-form" role="search">
+                    <div class="form-group">
+                      <input type="text" class="form-control" placeholder="Cerca Circolo" size="40">
+                    </div>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                  </form>
+                  <br>
+                  <div class="form-group">
+                    <table cellpadding="2" cellspacing="2" style="width:50%;">
+                      <tbody>
+                        <tr>
+                          <td style="vertical-align:center; background-color:#ffffff"><strong>Ricerca per:</strong></td>
+                          <td style="vertical-align:center; background-color:#ffffff">
+                            <div class="radio">
+                              <label>
+                                <input name="radio_choice" type="radio" value="0" checked>Nome</label>
+                            </div>
+                          </td>
+                          <td style="vertical-align:center; background-color:#ffffff">
+                            <div class="radio">
+                              <label>
+                                <input name="radio_choice" type="radio" value="1">Provinvia</label>
+                            </div>
+                          </td>
+                          <td style="vertical-align:center; background-color:#ffffff">
+                            <div class="radio">
+                              <label>
+                                <input name="radio_choice" type="radio" value="2">Regione</label>
+                            </div>
+                          </td>
+                          <td style="vertical-align:center; background-color:#ffffff">
+                            <div class="radio">
+                              <label>
+                                <input name="radio_choice" type="radio" value="3">N&deg; Identificativo</label>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </center>
+              </div>
+            </div>
+            
+            <!-- TORNEI -->
+            <div class="tab-pane" id="Torn">Tornei che richiedono approvazione. Assegnare un arbitro per approvare automaticamente.
+
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nome Torneo</th>
+                    <th>Circolo</th>
+                    <th>Data inizio</th>
+                    <th>Data fine</th>
+                    <th>Arbito assegnato</th>
+                    <th>Approvazione</th>
+                  </tr>
+                </thead>
+                <tbody>
+                 <c:forEach var="torneo" items="${tornei}">
+                  <tr>
+                    <td><c:out value="${torneo.nome}"/></td>
+                    <td> TODO </td>
+                    <td><c:out value="${torneo.data_inizio}"/></td>
+                    <td><c:out value="${torneo.data_fine}"/></td>
+                    <!-- un po' di javascript.... -->
+                    <td>
+                      	<c:if test="${empty torneo.arbitro}">
+						   <a class="btn btn-warning" data-toggle="modal" data-target="#myModal" onclick="setActionValue(<c:out value='${torneo.id}'/>)">Assegna Arbitro</a>
+						</c:if>
+                    	<c:if test="${!empty torneo.arbitro}">
+						   <c:out value="${torneo.arbitro}"/>
+						</c:if>	
+                      
+                    </td>
+                    <td>
+                    	<c:if test="${torneo.convalidato == 'si'}">
+						   Approvato
+						</c:if>
+                    	<c:if test="${torneo.convalidato == 'no'}">
+						   Non approvato
+						</c:if>					
+                      
+                    </td>
+                  </tr>
+                  </c:forEach>
+                </tbody>
+              </table>
+            </div>
+            <!-- ARBITRI -->
+            <div class="tab-pane" id="Arbi">Arbitri
+            </div>
+          </div>
+        </div>
+        <!-- Second Coloumn -->
+        <div class="col-md-1"></div>
+      </div>
+    </div>
+    
+    
+   <!-- Modale assegnazione arbitro -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Assegna arbitro</h4>
+	      </div>
+	      <div class="modal-body">
+	
+			<form method="POST" action="<c:url value="/gestione-torneo?azione=associa&federazione=${federazione.email}"/>" class="form-horizontal" role="form" id="action">
+          				<div class="form-group">
+          					<div class="col-sm-offset-2 col-sm-10">
+								<select class="form-control" name="arbitro">
+									<c:forEach var="arbitro" items="${arbitri}">
+										<option><c:out value="${arbitro.email}"/></option>
+								  	</c:forEach>
+								</select>
+							</div>
+          				</div>
+          				
+			            <div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="submit" class="btn btn-default">Registra</button>
+							</div>
+						</div>
+			</form>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+    
+    
+    <script>
+	    function setActionValue(id) {
+	    	document.getElementById('action').action = "<c:url value='/gestione-torneo?azione=associa&federazione=${federazione.email}'/>"+"&id="+id;
+	    };
+    
+    
+    	function rifiuta(id) {
+    		YUI().use("io-base", function(Y) {
+        		var uri = "GestioneTornei.php?azione=rifiuta&id="+id;
+
+        	    // Define a function to handle the response data.
+        	    function complete(id, o, args) {
+        	        var id = id; // Transaction ID.
+        	        var data = o.responseText; // Response data.
+        	        var args = args[1]; // 'ipsum'.
+        	        
+        	        if(data=='ok')
+        	        {
+
+        	        	// Replace the content in a Node
+        	        	Y.one("#"+id).setHTML("Rifiutato");
+        	        }
+        	    };
+
+        	    // Subscribe to event "io:complete", and pass an array
+        	    // as an argument to the event handler "complete", since
+        	    // "complete" is global.   At this point in the transaction
+        	    // lifecycle, success or failure is not yet known.
+        	    Y.on('io:complete', complete, Y, ['lorem', 'ipsum']);
+
+        	    // Make an HTTP request to 'get.php'.
+        	    // NOTE: This transaction does not use a configuration object.
+        	    var request = Y.io(uri);
+    		});
+    	}
+    </script>
+  </body>
+</html>

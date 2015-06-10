@@ -1,0 +1,117 @@
+package it.gemmed.servlet;
+
+import it.gemmed.database.FindPlayerDatabase;
+import it.gemmed.database.FindPartitaDatabase;
+import it.gemmed.database.UpdateGiocatoreDatabase;
+import it.gemmed.resource.Giocatore;
+import it.gemmed.resource.PartitaSingola;
+
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+/**
+ * . 
+ * 
+ * @author GEMMED
+ * @version 1.00
+ */
+@SuppressWarnings("serial")
+public class UpdateClassificaServlet extends AbstractDatabaseServlet{
+	/**
+	 * Aggiornamento della classifica dei giocatori. 
+	 * 
+	 * @param req
+	 *            the HTTP request from the client.
+	 * @param res
+	 *            the HTTP response from the server.
+	 * 
+	 * @throws ServletException
+	 *             if any error occurs while executing the servlet.
+	 * @throws IOException
+	 *             if any error occurs in the client/server communication.
+	 */
+	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		//lista partite vinte dal giocatorea
+		List<PartitaSingola> lpartga = null;
+		//lista partite vinte dal giocatoreb
+		List<PartitaSingola> lpartgb = null;
+		//lista giocatori di un torneo.
+		List<Giocatore> lgioc = null;
+		//rank finale da aggiornare nel db
+		String classfinal= null;
+	
+		
+		try {
+			int id = Integer.parseInt(req.getParameter("id"));
+			lgioc = new FindPlayerDatabase(DS.getConnection()).findPlayerByTorneo(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}//try-catch
+		
+		for (Giocatore tgioc : lgioc){
+			try {
+				
+				//numero di vittorie di un giocatore 
+				int npartv = lpartga.size() + lpartgb.size();
+				
+				for (PartitaSingola tpar : lpartga){
+					Giocatore perd = new FindPlayerDatabase(DS.getConnection()).findPlayerByEmail(tpar.getSfidanteB());
+					String rank = perd.getClassifica();
+					/**
+					 * si fa qualcosa 
+					 * 
+					 */
+					
+				}//for
+				
+				for (PartitaSingola tpar : lpartgb){
+					Giocatore perd = new FindPlayerDatabase(DS.getConnection()).findPlayerByEmail(tpar.getSfidanteA());
+					String rank = perd.getClassifica();
+					/**
+					 * si fa qualcosa 
+					 * 
+					 */
+					
+				}//for
+				
+				//aggiornamento della classifica
+				tgioc.setClassifica(classfinal);
+				UpdateGiocatoreDatabase t = new UpdateGiocatoreDatabase(DS.getConnection(),tgioc);
+				t.updateGiocatore();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}//try-catch
+		}//for
+	
+	}//doGet
+
+
+
+	/**
+	 * Ritorna il valore intero corrispondente al rank
+	 * @param la classifica di un giocatore
+	 * @return l'intero corrispondente
+	 */
+	private int convertClassifica(String rank){
+		if(rank.equals("1.t")){
+			return 1;
+		}else if(rank.equals("2.3")){
+			return 2;
+		}else  if(rank.equals("2.4")){
+			return 3;
+		}else{
+			return 0;
+		}//if-else
+	}//convertClassifica
+	
+}//UpdateClassificaServlet

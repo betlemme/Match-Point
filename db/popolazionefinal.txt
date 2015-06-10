@@ -1,0 +1,105 @@
+INSERT INTO federazione (email, password) VALUES ('federazione@mail.it', 'password');
+
+
+INSERT INTO circolo (nome, telefono, indirizzo, citta, provincia, email, password) 
+VALUES ('circolo1','0000000011','Via 11', 'citta 11', 'PD', 'circolo1@mail.it', 'password');
+
+INSERT INTO circolo (nome, telefono, indirizzo, citta, provincia, email, password) 
+VALUES ('circolo2','0000000022','Via 22', 'citta 22', 'PD', 'circolo2@mail.it', 'password');
+
+
+INSERT INTO campo (numero, superficie, circolo) VALUES ('1','erba'::tiposup, 'circolo1@mail.it');
+INSERT INTO campo (numero, superficie, circolo) VALUES ('2','erba'::tiposup, 'circolo1@mail.it');
+INSERT INTO campo (numero, superficie, circolo) VALUES ('3','terra_battuta'::tiposup, 'circolo1@mail.it');
+INSERT INTO campo (numero, superficie, circolo) VALUES ('4','terra_battuta'::tiposup, 'circolo1@mail.it');
+
+INSERT INTO campo (numero, superficie, circolo) VALUES ('1','cemento'::tiposup, 'circolo2@mail.it');
+INSERT INTO campo (numero, superficie, circolo) VALUES ('2','cemento'::tiposup, 'circolo2@mail.it');
+INSERT INTO campo (numero, superficie, circolo) VALUES ('3','terra_battuta'::tiposup, 'circolo2@mail.it');
+INSERT INTO campo (numero, superficie, circolo) VALUES ('4','terra_battuta'::tiposup, 'circolo2@mail.it');
+
+
+INSERT INTO arbitro (nome, cognome, data_nascita, indirizzo, citta,  provincia, telefono, email, password, tessera, scadenza_tessera) 
+VALUES ('arbitro1','A1','01/12/1990', 'Via 1', 'citta 1', 'PD', '0000000111', 'arbitro1@mail.it', 'password', '1111', '12/12/2020');
+
+INSERT INTO arbitro (nome, cognome, data_nascita, indirizzo, citta,  provincia, telefono, email, password, tessera, scadenza_tessera) 
+VALUES ('arbitro2','A2','02/12/1990', 'Via 2', 'citta 2', 'PD', '0000000222', 'arbitro2@mail.it', 'password', '2222', '12/12/2020');
+
+
+
+INSERT INTO giocatore (nome, cognome, data_nascita, indirizzo, citta, provincia, telefono, email, password, tessera, scadenza_tessera, ismaschio, circolo, classifica ) 
+VALUES ('Giocatore1','G1','01/12/1990','Via 1', 'citta1', 'PD', '0000000001', 'gioc1@mail.it', 'password', '111', '12/12/2020', TRUE, 'circolo1@mail.it', '4.NC');
+
+INSERT INTO giocatore (nome, cognome, data_nascita, indirizzo, citta, provincia, telefono, email, password, tessera, scadenza_tessera, ismaschio, circolo, classifica ) 
+VALUES ('Giocatore2','G2','02/12/1990','Via 2', 'citta2', 'PD', '0000000002', 'gioc2@mail.it', 'password', '222', '12/12/2020', TRUE, 'circolo1@mail.it', '4.NC');
+
+INSERT INTO giocatore (nome, cognome, data_nascita, indirizzo, citta, provincia, telefono, email, password, tessera, scadenza_tessera, ismaschio, circolo, classifica ) 
+VALUES ('Giocatore3','G3','03/12/1990','Via 3', 'citta3', 'PD', '0000000003', 'gioc3@mail.it', 'password', '333', '12/12/2020', TRUE, 'circolo2@mail.it', '4.NC');
+
+INSERT INTO giocatore (nome, cognome, data_nascita, indirizzo, citta, provincia, telefono, email, password, tessera, scadenza_tessera, ismaschio, circolo, classifica ) 
+VALUES ('Giocatore4','G4','04/12/1990','Via 4', 'citta4', 'PD', '0000000004', 'gioc4@mail.it', 'password', '444', '12/12/2020', TRUE, 'circolo2@mail.it', '4.NC');
+
+INSERT INTO giocatore (nome, cognome, data_nascita, indirizzo, citta, provincia, telefono, email, password, tessera, scadenza_tessera, ismaschio, circolo, classifica ) 
+VALUES ('Giocatore5','G5','05/12/1990','Via 5', 'citta5', 'PD', '0000000005', 'gioc5@mail.it', 'password', '555', '12/12/2020', TRUE, 'circolo1@mail.it', '4.NC');
+
+INSERT INTO giocatore (nome, cognome, data_nascita, indirizzo, citta, provincia, telefono, email, password, tessera, scadenza_tessera, ismaschio, circolo, classifica ) 
+VALUES ('Giocatore6','G6','06/12/1990','Via 6', 'citta6', 'PD', '0000000006', 'gioc6@mail.it', 'password', '666', '12/12/2020', TRUE, 'circolo2@mail.it', '4.NC');
+
+
+
+
+
+INSERT INTO torneo (nome, data_inizio, data_fine, circolo, tipologia, arbitro, federazione, convalidato, id, iscrizione_inizio, iscrizione_fine) 
+VALUES ('torneo0', '01/12/2014', '31/12/2014', 'circolo1@mail.it', 'singolo'::tiposcontro, 'arbitro1@mail.it', 'federazione@mail.it', 'si'::convalida, 4000, '01/06/2014', '10/10/2014');
+
+INSERT INTO torneo (nome, data_inizio, data_fine, circolo, tipologia, arbitro, federazione, convalidato, id, iscrizione_inizio, iscrizione_fine) 
+VALUES ('torneo1', '02/12/2014', '31/12/2014', 'circolo1@mail.it', 'singolo'::tiposcontro, 'arbitro1@mail.it', 'federazione@mail.it', 'si'::convalida, 4001, '01/06/2014', '01/09/2014');
+
+INSERT INTO torneo (nome, data_inizio, data_fine, circolo, tipologia, arbitro, federazione, convalidato, id, iscrizione_inizio, iscrizione_fine) 
+VALUES ('torneo2', '08/09/2014', '30/09/2014', 'circolo1@mail.it', 'singolo'::tiposcontro, 'arbitro1@mail.it', 'federazione@mail.it', 'si'::convalida, 4002, '01/06/2014', '01/09/2014');
+
+INSERT INTO torneo (nome, data_inizio, data_fine, circolo, tipologia, arbitro, federazione, convalidato, id, iscrizione_inizio, iscrizione_fine) 
+VALUES ('torneo3', '20/08/2014', '05/09/2014', 'circolo1@mail.it', 'singolo'::tiposcontro, 'arbitro1@mail.it', 'federazione@mail.it', 'si'::convalida, 4003, '01/06/2014', '01/07/2014');
+
+
+
+
+INSERT INTO iscrizione (giocatore, disponibilita, torneo) VALUES ('gioc1@mail.it', '{f,f,f,f,f,f,f,f,f,t,t,f,t,f,f,t,f,t,f,f,f,f,f,t}', 4000 );
+INSERT INTO iscrizione (giocatore, disponibilita, torneo) VALUES ('gioc2@mail.it', '{f,f,f,t,t,t,f,f,f,t,t,f,t,f,f,t,f,t,f,f,f,f,f,t}', 4000 );
+INSERT INTO iscrizione (giocatore, disponibilita, torneo) VALUES ('gioc3@mail.it', '{t,t,t,f,f,f,f,f,f,t,t,f,t,f,f,t,f,t,f,f,f,f,f,t}', 4000 );
+INSERT INTO iscrizione (giocatore, disponibilita, torneo) VALUES ('gioc4@mail.it', '{f,f,f,t,t,t,t,f,f,t,t,f,t,f,f,t,f,t,f,f,f,f,f,t}', 4000 );
+
+INSERT INTO iscrizione (giocatore, disponibilita, torneo) VALUES ('gioc1@mail.it', '{f,f,f,f,f,t,t,t,t,t,t,f,t,f,f,t,t,t,f,f,f,f,f,t}', 4001 );
+INSERT INTO iscrizione (giocatore, disponibilita, torneo) VALUES ('gioc2@mail.it', '{f,f,f,f,f,f,f,f,f,t,t,f,t,t,t,t,f,t,f,f,f,f,f,t}', 4001 );
+INSERT INTO iscrizione (giocatore, disponibilita, torneo) VALUES ('gioc3@mail.it', '{f,f,f,f,f,f,f,f,f,t,t,f,t,f,f,t,f,t,f,f,f,f,f,t}', 4001 );
+INSERT INTO iscrizione (giocatore, disponibilita, torneo) VALUES ('gioc4@mail.it', '{f,f,f,f,f,f,f,f,f,t,t,f,t,f,f,t,f,f,f,f,t,t,f,t}', 4001 );
+INSERT INTO iscrizione (giocatore, disponibilita, torneo) VALUES ('gioc5@mail.it', '{f,t,t,t,f,f,f,f,f,t,t,f,t,f,f,t,f,t,f,f,f,f,f,t}', 4001 );
+INSERT INTO iscrizione (giocatore, disponibilita, torneo) VALUES ('gioc6@mail.it', '{t,t,t,f,f,f,f,f,f,t,t,f,t,f,f,t,f,t,f,f,f,f,f,t}', 4001 );
+
+INSERT INTO iscrizione (giocatore, disponibilita, torneo) VALUES ('gioc1@mail.it', '{f,f,f,f,f,f,f,f,f,t,t,f,t,f,f,t,f,t,f,f,f,f,f,t}', 4002 );
+INSERT INTO iscrizione (giocatore, disponibilita, torneo) VALUES ('gioc2@mail.it', '{f,f,f,t,t,t,f,f,f,t,t,f,t,f,f,t,f,t,f,f,f,f,f,t}', 4002 );
+INSERT INTO iscrizione (giocatore, disponibilita, torneo) VALUES ('gioc3@mail.it', '{t,t,t,f,f,f,f,f,f,t,t,f,t,f,f,t,f,t,f,f,f,f,f,t}', 4002 );
+INSERT INTO iscrizione (giocatore, disponibilita, torneo) VALUES ('gioc4@mail.it', '{f,f,f,t,t,t,t,f,f,t,t,f,t,f,f,t,f,t,f,f,f,f,f,t}', 4002 );
+
+INSERT INTO iscrizione (giocatore, disponibilita, torneo) VALUES ('gioc1@mail.it', '{f,f,f,f,f,t,t,t,t,t,t,f,t,f,f,t,t,t,f,f,f,f,f,t}', 4003 );
+INSERT INTO iscrizione (giocatore, disponibilita, torneo) VALUES ('gioc2@mail.it', '{f,f,f,f,f,f,f,f,f,t,t,f,t,t,t,t,f,t,f,f,f,f,f,t}', 4003 );
+INSERT INTO iscrizione (giocatore, disponibilita, torneo) VALUES ('gioc3@mail.it', '{f,f,f,f,f,f,f,f,f,t,t,f,t,f,f,t,f,t,f,f,f,f,f,t}', 4003 );
+
+
+INSERT INTO partita_singola (numero_partita, data, ora, campo, circolo, sfidantea, sfidanteb, vittoriasfidantea, torneo, set1, set2, set3, forfait)
+VALUES (2, '09/09/2014', '10:30:00', 1, 'circolo1@mail.it', 'gioc1@mail.it', 'gioc3@mail.it', TRUE, 4002, '6-3'::risultato, '4-6'::risultato, '6-0'::risultato, FALSE ); 
+
+INSERT INTO partita_singola (numero_partita, data, ora, campo, circolo, sfidantea, sfidanteb, torneo)
+VALUES (3, '14/09/2014', '10:30:00', 2, 'circolo1@mail.it', 'gioc2@mail.it', 'gioc4@mail.it', 4002 ); 
+
+INSERT INTO partita_singola (numero_partita, data, ora, campo, circolo, sfidantea,torneo)
+VALUES (1, '18/09/2014', '12:30:00', 1, 'circolo1@mail.it', 'gioc1@mail.it', 4002 ); 
+
+
+INSERT INTO partita_singola (numero_partita, data, ora, campo, circolo, sfidantea, sfidanteb, vittoriasfidantea, torneo, forfait)
+VALUES (2, '22/08/2014', '14:30:00', 1, 'circolo1@mail.it', 'gioc1@mail.it', 'gioc3@mail.it', FALSE , 4003, TRUE ); 
+
+INSERT INTO partita_singola (numero_partita, data, ora, campo, circolo, sfidantea, sfidanteb, vittoriasfidantea, torneo, set1, set2,  forfait)
+VALUES (1, '28/08/2014', '18:30:00', 3, 'circolo1@mail.it', 'gioc3@mail.it', 'gioc2@mail.it', TRUE, 4003, '6-3'::risultato, '6-2'::risultato, FALSE ); 
+
+

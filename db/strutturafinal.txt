@@ -1,0 +1,220 @@
+CREATE TYPE convalida AS ENUM (
+    'approvare',
+    'si',
+    'no'
+);
+
+CREATE TYPE risultato AS ENUM (
+    '6-0',
+    '6-1',
+    '6-2',
+    '6-3',
+    '6-4',
+    '7-5',
+    '7-6',
+    '0-6',
+    '1-6',
+    '2-6',
+    '3-6',
+    '4-6',
+    '5-7',
+    '6-7'
+);
+
+
+
+CREATE DOMAIN stringa AS character varying(30);
+
+CREATE TYPE tiposcontro AS ENUM (
+    'singolo',
+    'doppio'
+);
+
+CREATE TYPE tiposup AS ENUM (
+    'terra_battuta',
+    'sintetico',
+    'erba',
+    'cemento'
+);
+
+CREATE SEQUENCE torneo_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+
+CREATE TABLE arbitro (
+    nome stringa NOT NULL,
+    cognome stringa NOT NULL,
+    data_nascita date NOT NULL,
+    indirizzo stringa,
+	citta stringa,
+	provincia character(2),
+    telefono character(10),
+    email stringa NOT NULL,
+    tessera character varying(15) NOT NULL, 
+    scadenza_tessera date NOT NULL,
+    password stringa NOT NULL,
+	PRIMARY KEY (email)
+);
+
+
+
+
+CREATE TABLE circolo (
+    nome stringa NOT NULL,
+    telefono character(10),
+    indirizzo stringa,
+	citta stringa,
+	provincia character(2),
+    email stringa NOT NULL,
+    password stringa NOT NULL,
+	PRIMARY KEY (email)
+);
+
+
+CREATE TABLE federazione (
+    email stringa NOT NULL,
+    password stringa NOT NULL,
+	PRIMARY KEY (email)
+);
+
+CREATE TABLE giocatore (
+    nome stringa NOT NULL,
+    cognome stringa NOT NULL,
+    data_nascita date NOT NULL,
+    indirizzo stringa,
+	citta stringa,
+	provincia character(2),
+    telefono character(10),
+    email stringa NOT NULL,
+    password stringa NOT NULL,
+    tessera character varying(15),
+    scadenza_tessera date,
+    classifica character varying(5),
+    circolo stringa,
+    atp_wta smallint  CHECK (((0 <= atp_wta) AND (atp_wta <= 1500))),
+    itf smallint CHECK (((0 <= itf) AND (itf <= 1000))),
+    classifica_dinamica character varying(5),
+    ismaschio boolean,
+    punti_aggiuntivi integer CHECK (0 <= punti_aggiuntivi),
+	CHECK ((tessera IS NULL AND scadenza_tessera IS NULL) OR (tessera IS NOT NULL AND scadenza_tessera IS NOT NULL)),
+	PRIMARY KEY (email),
+	FOREIGN KEY (circolo) REFERENCES circolo(email)
+);
+
+
+CREATE TABLE campo (
+    numero smallint NOT NULL CHECK ((numero > 0)),
+    superficie tiposup NOT NULL,
+    circolo stringa NOT NULL,
+	PRIMARY KEY (numero, circolo),
+	FOREIGN KEY (circolo) REFERENCES circolo(email)
+);
+
+CREATE TABLE torneo (
+    nome stringa NOT NULL,
+    data_inizio date NOT NULL,
+    data_fine date NOT NULL,
+    categoria character varying(5) DEFAULT '4.NC',
+    circolo stringa NOT NULL,
+    tipologia tiposcontro NOT NULL,
+    arbitro stringa,
+    federazione stringa,
+    convalidato convalida NOT NULL,
+    id bigint NOT NULL CHECK ((id > 0)),
+    iscrizione_inizio date NOT NULL,
+    iscrizione_fine date NOT NULL,
+    riduzione smallint DEFAULT 0 CHECK (((0 <= riduzione) AND (riduzione <= 100))),
+	PRIMARY KEY (id),
+	FOREIGN KEY (arbitro) REFERENCES arbitro(email),
+    FOREIGN KEY (circolo) REFERENCES circolo(email),
+    FOREIGN KEY (federazione) REFERENCES federazione(email),
+	CHECK ( (iscrizione_inizio < iscrizione_fine) AND (iscrizione_fine < data_inizio) AND (data_inizio < data_fine)),
+	CHECK ( ( convalidato = 'approvare' AND arbitro IS NULL AND federazione IS NULL) OR ( convalidato = 'no' AND arbitro IS NULL AND federazione IS NOT NULL) OR ( convalidato = 'si' AND arbitro IS NOT NULL AND federazione IS NOT NULL))
+);
+
+ALTER TABLE ONLY torneo ALTER COLUMN id SET DEFAULT nextval('torneo_id_seq'::regclass);
+
+
+CREATE TABLE iscrizione (
+    giocatore stringa NOT NULL,
+    disponibilita boolean[] NOT NULL,
+    torneo bigint NOT NULL,
+	PRIMARY KEY (giocatore, torneo),
+	FOREIGN KEY (giocatore) REFERENCES giocatore(email),
+    FOREIGN KEY (torneo) REFERENCES torneo(id)
+);
+
+CREATE TABLE team (
+    idteam stringa NOT NULL,
+    giocatorea stringa NOT NULL,
+    giocatoreb stringa NOT NULL,
+	PRIMARY KEY (idteam),
+	FOREIGN KEY (giocatorea) REFERENCES giocatore(email),
+    FOREIGN KEY (giocatoreb) REFERENCES giocatore(email),
+    CHECK ((giocatorea) <> (giocatoreb))
+);
+
+
+CREATE TABLE partita_doppia (
+    numero_partita smallint NOT NULL CHECK ((numero_partita > 0)),
+    data date,
+    ora time without time zone,
+    campo smallint,
+    circolo stringa,
+    teama stringa,
+    teamb stringa,
+    vittoriateama boolean,
+    torneo bigint NOT NULL,
+    set1 risultato,
+    set2 risultato,
+    set3 risultato,
+	CHECK (( set1 IS NULL AND set2 IS NULL AND set3 IS NULL) OR (set1 IS NOT NULL AND set2 IS NOT NULL AND set3 is NULL) OR (set1 IS NOT NULL AND set2 IS NOT NULL AND set3 IS NOT NULL)),
+	CHECK (teama <> teamb),
+	PRIMARY KEY (numero_partita, torneo),
+	FOREIGN KEY (campo, circolo) REFERENCES campo(numero, circolo),
+    FOREIGN KEY (teama) REFERENCES team(idteam),
+    FOREIGN KEY (teamb) REFERENCES team(idteam),
+    FOREIGN KEY (torneo) REFERENCES torneo(id) 
+);
+
+CREATE TABLE partita_singola (
+    numero_partita smallint NOT NULL CHECK ((numero_partita > 0)),
+    data date,
+    ora time without time zone,
+    campo smallint,
+    circolo stringa,
+    sfidantea stringa,
+    sfidanteb stringa,
+    vittoriasfidantea boolean,
+    torneo bigint NOT NULL,
+    set1 risultato,
+    set2 risultato,
+    set3 risultato,
+    forfait boolean,
+	CHECK (( set1 IS NULL AND set2 IS NULL AND set3 IS NULL) OR (set1 IS NOT NULL AND set2 IS NOT NULL AND set3 is NULL) OR (set1 IS NOT NULL AND set2 IS NOT NULL AND set3 IS NOT NULL)),
+	CHECK ((forfait IS NULL) OR (forfait = TRUE AND set1 IS NULL AND set2 IS NULL AND set3 IS NULL) OR (forfait = FALSE)),
+	CHECK (sfidantea <> sfidanteb),
+	PRIMARY KEY (numero_partita, torneo),
+	FOREIGN KEY (campo, circolo) REFERENCES campo(numero, circolo),
+    FOREIGN KEY (sfidantea) REFERENCES giocatore(email),
+    FOREIGN KEY (sfidanteb) REFERENCES giocatore(email),
+    FOREIGN KEY (torneo) REFERENCES torneo(id)
+);
+
+
+CREATE TABLE storico (
+    giocatore stringa NOT NULL,
+    classifica character varying(5) NOT NULL,
+    anno smallint NOT NULL CHECK ((anno > 1900)),
+	PRIMARY KEY (giocatore, anno),
+	FOREIGN KEY (giocatore) REFERENCES giocatore(email)
+);
+
+
+
+

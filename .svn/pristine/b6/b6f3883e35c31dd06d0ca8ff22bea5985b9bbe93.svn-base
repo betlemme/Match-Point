@@ -1,0 +1,301 @@
+package it.gemmed.resource;
+
+import java.sql.Date;
+
+/**
+ * Dati relativi a un torneo
+ * @author manuel
+ *
+ */
+public class Torneo {
+	private final String nome;
+	private final Date data_inizio;
+	private final Date data_fine;
+	private final Date iscrizione_inizio;
+	private final Date iscrizione_fine;
+	private String categoria;
+	// Farlo auto-increment?
+	private int id;
+	private final String circolo;
+	private final String tipologia;
+	private String arbitro;
+	private String federazione;
+	private String convalidato = null;
+	private int riduzione;
+	
+	/**
+	 * @param convalidato the convalidato to set
+	 */
+	public void setConvalidato(String convalidato) {
+		this.convalidato = convalidato;
+	}
+	
+	/**
+	 *  Costruttore con tutti i campi, da usare quando si cerca
+	 * @param nome
+	 * @param data_inizio
+	 * @param data_fine
+	 * @param categoria
+	 * @param id
+	 * @param circolo
+	 * @param tipologia
+	 * @param arbitro
+	 * @param federazione
+	 * @param convalidato
+	 * @param iscrizione_inizio
+	 * @param iscrizione_fine
+	 * @param riduzione
+	 */
+	public Torneo(String nome, Date data_inizio, Date data_fine,
+			String categoria, int id, String circolo, String tipologia,
+			String arbitro, String federazione, String convalidato, Date iscrizione_inizio, Date iscrizione_fine, int riduzione) {
+		super();
+		this.nome = nome;
+		this.data_inizio = data_inizio;
+		this.data_fine = data_fine;
+		this.categoria = categoria;
+		this.id = id;
+		this.circolo = circolo;
+		this.tipologia = tipologia;
+		this.arbitro = arbitro;
+		this.federazione = federazione;
+		this.convalidato = convalidato;
+		this.iscrizione_inizio = iscrizione_inizio;
+		this.iscrizione_fine = iscrizione_fine;
+		this.riduzione = riduzione;
+	}	
+	
+	
+	/**
+	 * ---Nota di Mattia---
+	 * Costruttore obsoleto, utilizzare quello completo.
+	 * 
+	 *  Costruttore con quasi tutti i campi, tranne riduzione
+	 * @param nome
+	 * @param data_inizio
+	 * @param data_fine
+	 * @param categoria
+	 * @param id
+	 * @param circolo
+	 * @param tipologia
+	 * @param arbitro
+	 * @param federazione
+	 * @param convalidato
+	 * @param iscrizione_inizio
+	 * @param iscrizione_fine
+	 */
+	public Torneo(String nome, Date data_inizio, Date data_fine,
+			String categoria, int id, String circolo, String tipologia,
+			String arbitro, String federazione, String convalidato, Date iscrizione_inizio, Date iscrizione_fine) {
+		super();
+		this.nome = nome;
+		this.data_inizio = data_inizio;
+		this.data_fine = data_fine;
+		this.categoria = categoria;
+		this.id = id;
+		this.circolo = circolo;
+		this.tipologia = tipologia;
+		this.arbitro = arbitro;
+		this.federazione = federazione;
+		this.convalidato = convalidato;
+		this.iscrizione_inizio = iscrizione_inizio;
+		this.iscrizione_fine = iscrizione_fine;
+	}
+	
+	/**
+	 *  ---Nota di Mattia---
+	 * Costruttore obsoleto, utilizzare quello completo.
+	 *  
+	 * Costruttore senza id, da usare solo durante la creazione del torneo
+	 * @param nome
+	 * @param data_inizio
+	 * @param data_fine
+	 * @param circolo
+	 * @param tipologia
+	 * @param convalidato
+	 */
+	public Torneo(String nome, Date data_inizio, Date data_fine, Date iscrizione_inizio, Date iscrizione_fine,
+			String circolo, String tipologia, String convalidato) {
+		super();
+		this.nome = nome;
+		this.data_inizio = data_inizio;
+		this.data_fine = data_fine;
+		this.circolo = circolo;
+		this.tipologia = tipologia;
+		this.convalidato = convalidato;
+		this.iscrizione_inizio = iscrizione_inizio;
+		this.iscrizione_fine = iscrizione_fine;
+	}
+	
+	
+	
+	/**
+	 * ---Nota di Mattia---
+	 * Costruttore obsoleto, utilizzare quello completo.
+	 * 
+	 * Costruttore con quasi tutti i campi, mancano inscrizione_inizio, iscrizione_fine e riduzione
+	 * @param nome
+	 * @param data_inizio
+	 * @param data_fine
+	 * @param categoria
+	 * @param id
+	 * @param circolo
+	 * @param tipologia
+	 * @param arbitro
+	 * @param federazione
+	 * @param convalidato
+	 */
+	public Torneo(String nome, Date data_inizio, Date data_fine,
+			String categoria, int id, String circolo, String tipologia,
+			String arbitro, String federazione, String convalidato) {
+		super();
+		this.nome = nome;
+		this.data_inizio = data_inizio;
+		this.data_fine = data_fine;
+		this.categoria = categoria;
+		this.id = id;
+		this.circolo = circolo;
+		this.tipologia = tipologia;
+		this.arbitro = arbitro;
+		this.federazione = federazione;
+		this.convalidato = convalidato;
+		this.iscrizione_inizio = null;
+		this.iscrizione_fine = null;
+	}
+	
+	
+	/**
+	 * @return iscrizione_inizio
+	 */
+	public Date getIscrizioneInizio() {
+		return iscrizione_inizio;
+	}
+	
+	/**
+	 * @return iscrizione_fine
+	 */
+	public Date getIscrizioneFine() {
+		return iscrizione_fine;
+	}
+	
+	
+	/**
+	 * @return iscrizione_inizio
+	 */
+	public Date getIscrizione_inizio() {
+		return iscrizione_inizio;
+	}
+	
+	/**
+	 * @return iscrizione_fine
+	 */
+	public Date getIscrizione_fine() {
+		return iscrizione_fine;
+	}
+	
+	/**
+	 * @return the categoria
+	 */
+	public String getCategoria() {
+		return categoria;
+	}
+	/**
+	 * @param categoria the categoria to set
+	 */
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
+	}
+	/**
+	 * @return the arbitro
+	 */
+	public String getArbitro() {
+		return arbitro;
+	}
+	/**
+	 * @param arbitro the arbitro to set
+	 */
+	public void setArbitro(String arbitro) {
+		this.arbitro = arbitro;
+	}
+	/**
+	 * @return the federazione
+	 */
+	public String getFederazione() {
+		return federazione;
+	}
+	/**
+	 * @param federazione the federazione to set
+	 */
+	public void setFederazione(String federazione) {
+		this.federazione = federazione;
+	}
+	
+	/**
+	 * @param riduzione to set
+	 */
+	public void setRiduzione(int riduzione) {
+		this.riduzione = riduzione;
+	}
+	
+	/**
+	 * @return the nome
+	 */
+	public String getNome() {
+		return nome;
+	}
+	/**
+	 * @return the data_inizio
+	 */
+	public Date getData_inizio() {
+		return data_inizio;
+	}
+	/**
+	 * @return the data_fine
+	 */
+	public Date getData_fine() {
+		return data_fine;
+	}
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+	/**
+	 * @return the circolo
+	 */
+	public String getCircolo() {
+		return circolo;
+	}
+	/**
+	 * @return the tipologia
+	 */
+	public String getTipologia() {
+		return tipologia;
+	}
+	/**
+	 * @return the convalidato
+	 */
+	public String getConvalidato() {
+		return convalidato;
+	}
+	
+	/**
+	 * @return riduzione
+	 */
+	public int getRiduzione(){
+		return riduzione;
+	}
+	
+	
+	/**
+	 * Controlla se l'iscrizione è finita
+	 * @return True se la fase di iscrizione è finita.
+	 */
+	public boolean getIsIscrizioneConclusa(){
+		java.util.Date now = new java.util.Date();
+		return now.after(iscrizione_fine);
+	}
+	
+	
+}

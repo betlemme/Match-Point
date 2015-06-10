@@ -1,0 +1,79 @@
+package it.gemmed.servlet;
+
+import it.gemmed.database.FindPartitaDatabase;
+import it.gemmed.database.FindPlayerDatabase;
+import it.gemmed.database.FindTorneoDatabase;
+import it.gemmed.database.UpdatePartitaSingolaDatabase;
+import it.gemmed.resource.Giocatore;
+import it.gemmed.resource.Message;
+import it.gemmed.resource.PartitaSingola;
+import it.gemmed.resource.Torneo;
+import it.gemmed.resource.Circolo;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+@SuppressWarnings("serial")
+public class UpdatePartitaSingolaServlet extends AbstractDatabaseServlet {
+	protected void doGet(HttpServletRequest req, HttpServletResponse res)
+			throws ServletException, IOException {
+
+		int id = -1;
+		int numeroPartita = -1;
+		String sfidanteA; 
+		String sfidanteB;
+		String vincitore;
+		boolean vittoriaSfidanteA = false;
+		
+		Message m = null;
+		
+		try {
+			id = Integer.parseInt(req.getParameter("id"));
+			numeroPartita = Integer.parseInt(req.getParameter("numeroPartita"));
+			sfidanteA = req.getParameter("sfidanteA");
+			sfidanteB = req.getParameter("sfidanteB");
+			vincitore = req.getParameter("vincitore");//è il pulsante radio della form, che può valere A o B
+			if (vincitore.equals("A")) vittoriaSfidanteA = (true);
+			
+			//creo bean per aggiornare vincitore
+			PartitaSingola partita = new PartitaSingola(id, numeroPartita);
+			partita.setvittoriaSfidanteA(vittoriaSfidanteA);
+			new UpdatePartitaSingolaDatabase(DS.getConnection(), partita).updateVincitore();
+			
+			
+			/* 
+			
+			//creo bean per aggiornare sfidante nel padre
+			int partitaPadre = (numeroPartita/2);//num. partita a cui aggiornare gli sfidanti
+			PartitaSingola padre = new PartitaSingola(id, partitaPadre);
+			//ora se partita è figlio destro, nel padre aggiorno lo sfidante A, altrimenti se èfiglio sx, lo sfidante B:
+			if (numeroPartita%2 == 0) padre.setSfidanteA(vittoriaSfidanteA? sfidanteA : sfidanteB);
+			else padre.setSfidanteB(vittoriaSfidanteA? sfidanteA : sfidanteB);
+			new UpdatePartitaSingolaDatabase(DS.getConnection(), partita).updateSfidante();
+
+			*/
+			
+			m = new Message("aggiornamento riuscito");
+		}  catch (NumberFormatException ex) {
+			m = new Message("Invalid input parameters: salary must be integer.", 
+					"E100", ex.getMessage());
+		} catch (SQLException ex) {
+				m = new Message("unexpected error while accessing the database.", 
+						"E200", ex.getMessage());
+		}
+			
+			req.setAttribute("id", id);
+			req.setAttribute("numeroPartita", numeroPartita);
+			req.setAttribute("message", m);
+			req.getRequestDispatcher("/profiloPartita").forward(req, res);
+		 
+
+	}
+
+}

@@ -1,0 +1,47 @@
+package it.gemmed.resource;
+
+/**
+ * Classifica storica di un giocatore
+ * @author manuel
+ *
+ */
+public class Storico {
+	private final String giocatore;
+	private final String classifica;
+	private final int anno;
+	
+	/**
+	 * @param giocatore
+	 * @param classifica
+	 * @param anno
+	 */
+	public Storico(String giocatore, String classifica, int anno) {
+		super();
+		this.giocatore = giocatore;
+		this.classifica = classifica;
+		this.anno = anno;
+	}
+
+	/**
+	 * @return the giocatore
+	 */
+	public String getGiocatore() {
+		return giocatore;
+	}
+
+	/**
+	 * @return the classifica
+	 */
+	public String getClassifica() {
+		return classifica;
+	}
+
+	/**
+	 * @return the anno
+	 */
+	public int getAnno() {
+		return anno;
+	}
+	
+	
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="match-point">
+        <wb-resource deploy-path="/WEB-INF/web.xml" source-path="/trunk/src/webapp/WEB-INF/web.xml"/>
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/trunk/src/webapp/css"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/trunk/src/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/trunk/src/webapp/html"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/trunk/src/webapp/jsp"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/trunk/src/webapp/img"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/trunk/src/webapp/js"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/trunk/src/webapp/META-INF"/>
+        <property name="context-root" value="match-point"/>
+        <property name="java-output-path" value="/match-point/target/classes"/>
+    </wb-module>
+</project-modules>

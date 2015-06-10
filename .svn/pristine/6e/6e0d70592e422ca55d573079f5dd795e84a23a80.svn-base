@@ -1,0 +1,96 @@
+package it.gemmed.servlet;
+
+import it.gemmed.database.CreateIscrizioneDatabase;
+import it.gemmed.resource.Circolo;
+import it.gemmed.resource.Giocatore;
+import it.gemmed.resource.Torneo;
+import it.gemmed.resource.Iscrizione;
+import it.gemmed.resource.Message;
+
+import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.BitSet;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Creates a new employee into the database. 
+ * 
+ * @author Nicola Ferro
+ * @version 1.00
+ */
+@SuppressWarnings("serial")
+public class IscrizioneTorneoServlet extends AbstractDatabaseServlet {
+
+	/**
+	 * Creates a new employee into the database. 
+	 * 
+	 * @param req
+	 *            the HTTP request from the client.
+	 * @param res
+	 *            the HTTP response from the server.
+	 * 
+	 * @throws ServletException
+	 *             if any error occurs while executing the servlet.
+	 * @throws IOException
+	 *             if any error occurs in the client/server communication.
+	 */
+	public void doGet(HttpServletRequest req, HttpServletResponse res)
+			throws ServletException, IOException {
+		
+		Iscrizione i = null;
+		
+		// request parameters
+		int torneo;
+		BitSet disponibilita;
+		String emailGiocatore;
+		
+		Message m;
+		
+		try{
+			// retrieves the request parameters
+			torneo = Integer.parseInt(req.getParameter("id"));
+			
+			disponibilita = null;
+			
+			Giocatore giocatore = (Giocatore) req.getSession().getAttribute("giocatore");
+			emailGiocatore = giocatore.getEmail();
+			
+			
+			// creates a new employee from the request parameters
+			i = new Iscrizione(emailGiocatore, disponibilita, torneo);
+
+			// creates a new object for accessing the database and stores the employee
+			new CreateIscrizioneDatabase(DS.getConnection(), i).createIscrizione();
+			
+			m = new Message("Iscrizione avvenuta");
+
+		} catch (NumberFormatException ex) {
+			m = new Message("Cannot create the employee. Invalid input parameters: identifier, age, and salary must be integer.", 
+					"E100", ex.getMessage());
+		} catch (SQLException ex) {
+//			if (e
+//					.getSQLState()
+//					.equals("23505")) {
+//				m = new Message("Cannot create the employee: employee  already exists.", 
+//						"E300", ex.getMessage());
+//			} else {
+				m = new Message("Cannot create the employee: unexpected error while accessing the database.", 
+						"E200", ex.getMessage());
+//			}
+		}
+		
+		// stores the employee and the message as a request attribute
+		req.setAttribute("iscrizione", i);
+		req.setAttribute("message", m);
+		
+		// forwards the control to the createEmployeeResult JSP
+		req.getRequestDispatcher("/profiloTorneo").forward(req, res);
+
+
+	}
+
+}

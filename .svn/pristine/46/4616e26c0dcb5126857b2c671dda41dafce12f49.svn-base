@@ -1,0 +1,133 @@
+package it.gemmed.database;
+
+import it.gemmed.resource.Campo;
+import it.gemmed.resource.Tiposuperficie;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class FindCampoDatabase {
+	/**
+	 * Seleziona tutti i campi di un dato circolo
+	 */
+	private static final String STATEMENT = "SELECT numero, superficie, circolo FROM campo WHERE circolo=?";
+	
+	
+	/**
+	 * Seleziona tutti i campi di un dato circolo
+	 */
+	private static final String STATEMENT2 = "INSERT INTO campo VALUES (?, ?::tiposup, ?)";
+	
+
+	/**
+	 * The connection to the database
+	 */
+	private final Connection con;
+
+	/**
+	 * The results of the search.
+	 */
+	private final List<Campo> campi;
+	
+	/**
+	 * The key of campo
+	 */
+	private String email;
+
+	/**
+	 * Creates a new object for storing an employee into the database.
+	 * 
+	 * @param con
+	 *            the connection to the database.
+	 * @param player
+	 *            the player to be stored into the database.
+	 */
+	public FindCampoDatabase(final Connection con) {
+		this.con = con;
+		this.campi = new ArrayList<Campo>();
+	}
+
+	/**
+	 * Seleziona tutti i campi di un dato circolo
+	 * @return lista campi
+	 * 
+	 * @throws SQLException
+	 *             if any error occurs while storing the employee.
+	 */
+	public List<Campo> findCampi(String email_circolo) throws SQLException {
+		
+		email=email_circolo;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			
+			pstmt = con.prepareStatement(STATEMENT);
+			pstmt.setString(1, email);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				campi.add(new Campo(rs.getInt("numero"), Tiposuperficie.valueOf(rs.getString("superficie")), rs.getString("circolo")));
+			}
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			
+			if (pstmt != null) {
+				pstmt.close();
+			}
+
+			con.close();
+		}
+		return campi;
+
+	}	
+	
+	
+	/**
+	 * Crea un nuoco campo
+	 * @return niente
+	 * 
+	 * @throws SQLException
+	 *             if any error occurs while storing the employee.
+	 */
+	public void createCampo(Campo campo) throws SQLException {
+		
+		email = campo.getCircolo();
+		int numero = campo.getNumero();
+		String superficie = campo.getSuperficie().name();
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			pstmt = con.prepareStatement(STATEMENT2);
+			pstmt.setInt(1, numero);
+			pstmt.setString(2, superficie);
+			pstmt.setString(3, email);
+
+			pstmt.execute();
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			
+			if (pstmt != null) {
+				pstmt.close();
+			}
+
+			con.close();
+		}
+
+	}	
+
+
+}

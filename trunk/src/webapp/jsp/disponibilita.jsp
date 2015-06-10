@@ -1,0 +1,85 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Disponibilità oraria</title>
+<c:import url="/jsp/include/head.jsp" />
+</head>
+<body>
+	<table class="table">
+		<thead>
+			<td>Nome</td>
+			<td>Giorno 1</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>Giorno 2</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>Giorno 3</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		<thead>
+			<td></td>
+			<td>8-10</td>
+			<td>10-12</td>
+			<td>12-14</td>
+			<td>14-16</td>
+			<td>16-18</td>
+			<td>18-20</td>
+			<td>20-22</td>
+			<td>22-24</td>
+			<td>8-10</td>
+			<td>10-12</td>
+			<td>12-14</td>
+			<td>14-16</td>
+			<td>16-18</td>
+			<td>18-20</td>
+			<td>20-22</td>
+			<td>22-24</td>
+			<td>8-10</td>
+			<td>10-12</td>
+			<td>12-14</td>
+			<td>14-16</td>
+			<td>16-18</td>
+			<td>18-20</td>
+			<td>20-22</td>
+			<td>22-24</td>
+		</thead>
+		</thead>
+
+		<td></td>
+		<c:forEach var="iscrizione" items="${iscrizioni}">
+			<tr>
+				<td><c:out value="${iscrizione.giocatore}" /></td>>
+				<c:forEach var="disp" items="${iscrizione.disponibilita}" begin="0"
+					end="24" varStatus="index">
+					<td><c:if
+							test="${iscrizione.disponibilita[index.count-1] == true}">
+							<i class="glyphicon glyphicon-ok" style="color: green"></i>
+						</c:if> <c:if test="${iscrizione.disponibilita[index.count-1] == false}">
+							<i class="glyphicon glyphicon-remove" style="color: red"></i>
+						</c:if></td>
+				</c:forEach>
+			</tr>
+		</c:forEach>
+	</table>
+</body>
+</html>

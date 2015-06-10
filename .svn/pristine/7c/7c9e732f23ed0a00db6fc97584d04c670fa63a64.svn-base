@@ -1,0 +1,182 @@
+package it.gemmed.servlet;
+
+import it.gemmed.database.CreatePlayerDatabase;
+import it.gemmed.database.FindPlayerDatabase;
+import it.gemmed.database.UpdateGiocatoreDatabase;
+import it.gemmed.resource.Giocatore;
+import it.gemmed.resource.Message;
+
+import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.Email;
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.SimpleEmail;
+
+/**
+ * Gestice varie aziobi relative ai giocatori.
+ * 
+ * @author GEMMED
+ * @version 1.00
+ */
+@SuppressWarnings("serial")
+public class GestioneGiocatoriServlet extends AbstractDatabaseServlet {
+
+	/**
+	 * A seconda del valore passato in get, decide quale azione seguire.
+	 * 
+	 * @param req
+	 *            the HTTP request from the client.
+	 * @param res
+	 *            the HTTP response from the server.
+	 * 
+	 * @throws ServletException
+	 *             if any error occurs while executing the servlet.
+	 * @throws IOException
+	 *             if any error occurs in the client/server communication.
+	 */
+	public void doPost(HttpServletRequest req, HttpServletResponse res)
+			throws ServletException, IOException {
+		String azione = req.getParameter("azione");
+		
+		if(azione.equals("tessera")) {
+			String email = req.getParameter("email");
+			String tessera = req.getParameter("tessera");
+			Date scadenza = Date.valueOf(req.getParameter("data_scadenza"));
+			try {
+				Giocatore p = new FindPlayerDatabase(DS.getConnection()).findPlayerByEmail(email);
+				p.setTessera(tessera);
+				p.setScadenza_tessera(scadenza);
+				new UpdateGiocatoreDatabase(DS.getConnection(), p).updateGiocatore();
+				
+				req.getRequestDispatcher("/profiloFederazione").forward(req, res);
+			} catch (SQLException e) {
+				log(e.getMessage());
+			}
+		}
+		
+		if(azione.equals("crea")) {
+			// request parameters
+			String nome = null;
+			String cognome = null;
+			Date data_nascita = null;
+			String email = null;
+			String password = null;
+			boolean ismaschio;
+			
+			// model
+			Giocatore p  = null;
+			Message m = null;
+
+			try
+			{
+				// retrieves the request parameters
+				nome = req.getParameter("nome");
+				cognome = req.getParameter("cognome");
+				data_nascita = Date.valueOf(req.getParameter("data_nascita"));
+				email = req.getParameter("email");
+				password = req.getParameter("password");
+				String sex = req.getParameter("sex");
+				if(sex.equals("maschio"))
+					ismaschio = true;
+				else
+					ismaschio = false;
+					
+
+				// creates a new employee from the request parameters
+				p = new Giocatore(nome, cognome, data_nascita, email, password, ismaschio);
+
+				// creates a new object for accessing the database and stores the employee
+				new CreatePlayerDatabase(DS.getConnection(), p).createEmployee();
+				
+				m = new Message("Giocatore successfully created.");
+
+			} 
+			catch (NumberFormatException ex) {
+				m = new Message("Cannot create the employee. Invalid input parameters: identifier, age, and salary must be integer.", 
+						"E100", ex.getMessage());
+				log(ex.getMessage());
+			} 
+			catch (SQLException ex) {
+					m = new Message("Cannot create the employee: unexpected error while accessing the database.", 
+							"E200", ex.getMessage());
+					log(ex.getMessage());
+			}
+			
+			Email emailToSend = new SimpleEmail();
+			emailToSend.setHostName("smtp.googlemail.com");
+			emailToSend.setSmtpPort(465);
+			emailToSend.setAuthenticator(new DefaultAuthenticator("gemmed.tennis@gmail.com", "iekohchu"));
+			emailToSend.setSSLOnConnect(true);
+			try {
+				emailToSend.setFrom("gemmed.tennis@gmail.com");
+				emailToSend.setSubject("Iscrizione al sito della federazione tennis");
+				emailToSend.setMsg("Il giocatore con indirizzo "+ email + " si è iscritto al sito.");
+				emailToSend.addTo(email);
+				emailToSend.send();
+			} catch (EmailException e) {
+				log(e.getMessage());
+			}
+			
+			// stores the employee and the message as a request attribute
+			req.setAttribute("giocatore", p);
+			req.setAttribute("message", m);
+			
+			// forwards the control to the createEmployeeResult JSP
+			req.getRequestDispatcher("/login?tipo=player").forward(req, res);
+		}
+		if(azione.equals("modifica")) {
+			// request parameters
+			String email = null;
+			String indirizzo = null;
+			String telefono = null;
+			String password = null;
+			
+			// model
+			Giocatore p  = null;
+			Message m = null;
+
+			try
+			{
+				// retrieves the request parameters
+				email =req.getParameter("email");
+				p =	new FindPlayerDatabase(DS.getConnection()).findPlayerByEmail(email);
+				telefono = req.getParameter("telefono");
+				indirizzo = req.getParameter("indirizzo");
+				password = req.getParameter("password");
+				
+				if(!telefono.equals(""))
+					p.setTelefono(telefono);
+				if(!indirizzo.equals(""))
+					p.setIndirizzo(indirizzo);
+				if(!password.equals(""))
+					p.setPassword(password);
+				new UpdateGiocatoreDatabase(DS.getConnection(),p).updateGiocatore();
+				
+				m = new Message("Giocatore successfully modified.");
+
+			} 
+			catch (NumberFormatException ex) {
+				m = new Message("Cannot modify the player's profile.", "E100", ex.getMessage());
+				log(ex.getMessage());
+			} 
+			catch (SQLException ex) {
+					m = new Message("Cannot modify the profile: unexpected error while accessing the database.", "E200", ex.getMessage());
+					log(ex.getMessage());
+			}
+			
+			req.getSession().setAttribute("giocatore", p);
+			req.getSession().setAttribute("message", m);
+			
+			req.getRequestDispatcher("/profiloGiocatore").forward(req, res);
+		}
+
+	}
+
+}

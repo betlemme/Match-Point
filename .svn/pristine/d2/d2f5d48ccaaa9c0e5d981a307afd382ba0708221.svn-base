@@ -1,0 +1,221 @@
+package it.gemmed.database;
+
+import it.gemmed.resource.Torneo;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class FindTorneoDatabase {
+	/**
+	 * Per cercare il torneo tramite circolo
+	 */
+	private static final String STATEMENT = "SELECT * FROM torneo WHERE circolo=?";
+	
+	/**
+	 * Per cercare il torneo tramite id
+	 */
+	private static final String STATEMENT_ID = "SELECT * FROM torneo WHERE id=?";
+	
+	/**
+	 * Usato per avere la lista di tutti i tornei
+	 */
+	private static final String SELECTALL = "SELECT * FROM torneo";
+
+	/**
+	 * Usato per avere la lista dei tornei approvati
+	 */
+	private static final String SELECTAPP = "SELECT * FROM torneo WHERE convalidato = 'si'";
+
+	/**
+	 * The connection to the database
+	 */
+	private final Connection con;
+
+	/**
+	 * The results of the search.
+	 */
+	private final List<Torneo> tornei;
+	
+	/**
+	 * The salary of the employee
+	 */
+	private String circolo;
+
+	/**
+	 * Creates a new object for storing an employee into the database.
+	 * 
+	 * @param con
+	 *            the connection to the database.
+	 * @param player
+	 *            the player to be stored into the database.
+	 */
+	public FindTorneoDatabase(final Connection con) {
+		this.con = con;
+		this.tornei = new ArrayList<Torneo>();
+	}
+
+	/**
+	 * Cerca tutti i tornei
+	 * @param circolo Circolo a cui appartiene il torneo (ignorato se selectALL è a true)
+	 * @return Una lista con i tornei
+	 * 
+	 * @throws SQLException
+	 *             Errore nella ricerca del torneo
+	 */
+	public List<Torneo> findTorneo() throws SQLException {
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+				pstmt = con.prepareStatement(SELECTALL);
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					tornei.add(new Torneo(rs.getString("nome"), rs
+							.getDate("data_inizio"), rs.getDate("data_fine"), rs.getString("categoria"), rs.getInt("id"),
+							rs.getString("circolo"), rs.getString("tipologia"), rs.getString("arbitro"), 
+							rs.getString("federazione"), rs.getString("convalidato")
+							));
+				}
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			
+			if (pstmt != null) {
+				pstmt.close();
+			}
+
+			con.close();
+		}
+		return tornei;
+
+	}	
+	
+	/**
+	 * Ricerca tutti i tornei di un circolo
+	 * @param circolo
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<Torneo> findTorneo(String circolo) throws SQLException {
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+				pstmt = con.prepareStatement(STATEMENT);
+				pstmt.setString(1, circolo);
+	
+				rs = pstmt.executeQuery();
+	
+				while (rs.next()) {
+					tornei.add(new Torneo(rs.getString("nome"), rs
+							.getDate("data_inizio"), rs.getDate("data_fine"), rs.getString("categoria"), rs.getInt("id"),
+							rs.getString("circolo"), rs.getString("tipologia"), rs.getString("arbitro"), 
+							rs.getString("federazione"), rs.getString("convalidato")
+							));
+				}
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			
+			if (pstmt != null) {
+				pstmt.close();
+			}
+
+			con.close();
+		}
+		return tornei;
+
+	}	
+	
+	/**
+	 * La ricerca tramite id deve ritornare un solo torneo
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
+	public Torneo findTorneo(int id) throws SQLException {
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+				pstmt = con.prepareStatement(STATEMENT_ID);
+				pstmt.setInt(1, id);
+	
+				rs = pstmt.executeQuery();
+	
+				while (rs.next()) {
+					tornei.add(new Torneo(rs.getString("nome"), rs
+							.getDate("data_inizio"), rs.getDate("data_fine"), rs.getString("categoria"), rs.getInt("id"),
+							rs.getString("circolo"), rs.getString("tipologia"), rs.getString("arbitro"), 
+							rs.getString("federazione"), rs.getString("convalidato")
+							));
+				}
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			
+			if (pstmt != null) {
+				pstmt.close();
+			}
+
+			con.close();
+		}
+		return tornei.get(0);
+
+	}	
+	/**
+	 * Cerca i tornei approvati
+	 * @param approvato true se il toeneo è approvato
+	 * @return Una lista con i tornei approvati
+	 * 
+	 * @throws SQLException
+	 *             Errore nella ricerca del torneo
+	 */
+	public List<Torneo> findTorneo(boolean approvato) throws SQLException {
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		if (approvato == true){
+		try {
+				pstmt = con.prepareStatement(SELECTAPP);
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					tornei.add(new Torneo(rs.getString("nome"), rs
+							.getDate("data_inizio"), rs.getDate("data_fine"), rs.getString("categoria"), rs.getInt("id"),
+							rs.getString("circolo"), rs.getString("tipologia"), rs.getString("arbitro"), 
+							rs.getString("federazione"), rs.getString("convalidato")
+							));
+				}
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			
+			if (pstmt != null) {
+				pstmt.close();
+			}
+
+			con.close();
+		}
+		}
+		return tornei;
+		
+	}
+	
+	
+	
+}

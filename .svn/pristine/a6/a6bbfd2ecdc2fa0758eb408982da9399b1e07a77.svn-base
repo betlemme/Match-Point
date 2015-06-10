@@ -1,0 +1,90 @@
+package it.gemmed.servlet;
+
+import it.gemmed.database.CreateArbitroDatabase;
+import it.gemmed.resource.Arbitro;
+import it.gemmed.resource.Message;
+
+import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Crea un nuovo arbitro
+ * 
+ * @author GEMMED
+ * @version 1.00
+ */
+@SuppressWarnings("serial")
+public class CreateArbitroServlet extends AbstractDatabaseServlet {
+
+	/**
+	 * Creates a new arbitro into the database. 
+	 * 
+	 * @param req
+	 *            the HTTP request from the client.
+	 * @param res
+	 *            the HTTP response from the server.
+	 * 
+	 * @throws ServletException
+	 *             if any error occurs while executing the servlet.
+	 * @throws IOException
+	 *             if any error occurs in the client/server communication.
+	 */
+	public void doPost(HttpServletRequest req, HttpServletResponse res)
+			throws ServletException, IOException {
+
+		// request parameters
+		String nome = null;
+		String cognome = null;
+		Date data_nascita = null;
+		String indirizzo = null;
+		String telefono = null;
+		String email = null;
+		String password = null;
+		String tessera = null;
+		Date scadenza_tessere= null;
+
+		// model
+		Arbitro p  = null;
+		Message m = null;
+
+		try{
+			// retrieves the request parameters
+			nome = req.getParameter("nome");
+			cognome = req.getParameter("cognome");
+			data_nascita = Date.valueOf(req.getParameter("data_nascita"));
+			indirizzo = req.getParameter("indirizzo");
+			telefono = req.getParameter("telefono");
+			email = req.getParameter("email");
+			password = req.getParameter("password");
+			tessera = req.getParameter("tessera");
+			scadenza_tessere = Date.valueOf(req.getParameter("scadenza_tessere"));
+
+			p = new Arbitro(nome, cognome, data_nascita, indirizzo, telefono, email, password, tessera, scadenza_tessere);
+
+			new CreateArbitroDatabase(DS.getConnection(), p).createArbitro();
+			
+			m = new Message("Arbitro successfully created.");
+
+		} catch (NumberFormatException ex) {
+			m = new Message("Cannot create the arbitro. Invalid input parameters.", 
+					"E100", ex.getMessage());
+		} catch (SQLException ex) {
+				m = new Message("Cannot create the arbitro: unexpected error while accessing the database.", 
+						"E200", ex.getMessage());
+		}
+		
+		req.setAttribute("arbitro", p);
+		req.setAttribute("message", m);
+		
+		// Si redirige verso la homepage
+		req.getRequestDispatcher("/jsp/index.jsp").forward(req, res);
+
+
+	}
+
+}

@@ -1,0 +1,569 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+
+    <title>Circolo - presentazione</title>
+    
+	<c:import url="/jsp/include/head.jsp"/>
+  
+  </head>
+  
+  <body>
+  <!-- NAVBAR
+================================================== -->
+ 
+ 
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="<c:url value="/home" />">Match Point</a>
+    </div>
+
+				<c:choose>
+					<c:when	test="${giocatore.email != null}">
+						<ul class="nav navbar-nav navbar-right">
+							<li class="dropdown"><a href="#" class="dropdown-toggle"
+								data-toggle="dropdown"><c:out value="${giocatore.email}" /> <b
+									class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="<c:url value="/profiloGiocatore"/>">Profilo</a></li>
+									<li class="divider"></li>
+									<li><a href="<c:url value="/logout"/>">Log Out</a></li>
+								</ul></li>
+						</ul>
+					</c:when>
+					<c:when test="${arbitro.email != null}">
+						<ul class="nav navbar-nav navbar-right">
+							<li class="dropdown"><a href="#" class="dropdown-toggle"
+								data-toggle="dropdown"><c:out value="${arbitro.email}" /> <b
+									class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="<c:url value="/profiloArbitro"/>">Profilo</a></li>
+									<li class="divider"></li>
+									<li><a href="<c:url value="/logout"/>">Log Out</a></li>
+								</ul></li>
+						</ul>
+					</c:when>
+					<c:when test="${circolo.email != null}">
+						<ul class="nav navbar-nav navbar-right">
+							<li class="dropdown"><a href="#" class="dropdown-toggle"
+								data-toggle="dropdown"><c:out value="${circolo.email}" /> <b
+									class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="<c:url value="/profiloCircolo"/>">Profilo</a></li>
+									<li class="divider"></li>
+									<li><a href="<c:url value="/logout"/>">Log Out</a></li>
+								</ul></li>
+						</ul>
+					</c:when>		
+					<c:when test="${federazione.email != null}">
+						<ul class="nav navbar-nav navbar-right">
+							<li class="dropdown"><a href="#" class="dropdown-toggle"
+								data-toggle="dropdown"><c:out value="${federazione.email}" /> <b
+									class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="<c:url value="/profiloFederazione"/>">Profilo</a></li>
+									<li class="divider"></li>
+									<li><a href="<c:url value="/logout"/>">Log Out</a></li>
+								</ul></li>
+						</ul>
+					</c:when>	
+					<c:otherwise>
+					</c:otherwise>
+				</c:choose>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+  
+<hr>
+	
+<div class="jumbotron">     
+	
+		<div class="container">
+				
+			<div class="row">
+				<div class="col-md-5">
+					<h1>Torneo <c:out value="${torneo.nome}" /></h1>
+				</div>		
+			</div>
+		</div>
+</div>
+
+
+    <div class="container">
+    
+    <table class="table table-striped">
+    				<thead>
+						<tr>
+						  <th>Nome</th>
+						  <th>Data inizio</th>
+						  <th>Data fine</th>
+						  <th>Categoria</th>
+						  <th>Circolo</th>
+						  <th>Tipologia</th>
+						  <th>Arbitro</th>
+						  <th>Fed</th>
+						  <th>Convalidato</th>
+						</tr>
+					</thead>
+    				
+    				<tbody>
+    					<form method="GET" action="<c:url value="/profiloTorneoArbitro"/>">
+    					<input type="hidden" name="id" value="${torneo.id}">
+    						<tr>
+    							<td><button type="submit" class="btn btn-default"><c:out value="${torneo.nome}"/></button></td>
+    							<td><c:out value="${torneo.data_inizio}"/></td>
+    							<td><c:out value="${torneo.data_fine}"/></td>
+    							<td><c:out value="${torneo.categoria}"/></td>
+    							<td><c:out value="${torneo.circolo}"/></td>
+    							<td><c:out value="${torneo.tipologia}"/></td>
+    							<td><c:out value="${torneo.arbitro}"/></td>
+    							<td><c:out value="${torneo.federazione}"/></td>
+    							<td><c:out value="${torneo.convalidato}"/></td>
+    						</tr>
+    					</form>
+    				</tbody>
+
+				</table>
+GIOCATORI ISCRITTI: <a href="<c:url value="/disponibilita?id=${torneo.id}"/>">Disponibilità</a>
+<table class="table table-striped">
+    				<thead>
+						<tr>
+						  <th>Nome</th>
+						  <th>Cognome</th>
+						  <th>Email</th>
+						  
+						</tr>
+					</thead>
+    				<tbody>
+    					<c:forEach var="giocatore" items="${giocatori}">
+    						<tr>
+    							<td><c:out value="${giocatore.nome}"/></td>
+    							<td><c:out value="${giocatore.cognome}"/></td>
+    							<td><c:out value="${giocatore.email}"/></td>
+    						</tr>
+    					</c:forEach>
+    				</tbody>
+
+				</table>
+
+<hr>
+		<c:if test='${empty partite}'> 
+		<div class="row">
+    		<form method="GET" action="<c:url value="/create-tabellone"/>">
+    			<input type="hidden" name="id" value="${torneo.id}">
+    			<input type="hidden" name="circolo" value="${torneo.circolo}">
+    			<div class="col-md-2">
+              		<button type="submit" class="btn btn-default">Crea Tabellone</button>
+            	</div>
+
+    		</form>
+    	</div>  
+    	</c:if>  
+    	
+<hr>	
+ 
+    	<!-- display the list of found employees, if any -->
+    	<c:if test='${not empty partite}'>
+    		<div class="jumbotron">
+    			<table class="table table-striped">
+    				<thead>
+						<tr>
+						  <th>Numero Partita/<c:out value="${partite.size()}"/></th>
+						  <th>Data</th>
+						  <th>Ora</th>
+						  <th>Campo</th>
+						  <th>Sfidante A</th>
+						  <th>Sfidante B</th>
+						  <th>Set 1</th>
+						  <th>Set 2</th>
+						  <th>Set 3</th>
+						  
+	
+						</tr>
+					</thead>
+    				
+    				<tbody>
+    					<c:forEach var="partita" items="${partite}">
+  						
+    						<tr>
+    							<form method="GET" action="<c:url value="/profiloPartita"/>">	
+								<input type="hidden" name="numeroPartita" value="${partita.numeroPartita}">
+								<input type="hidden" name="id" value="${torneo.id}">
+    							<td><button type="submit" class="btn btn-default"><c:out value="${partita.numeroPartita}"/></button></td>
+    							</form>	
+    							
+    							
+    							<c:choose>
+    								<c:when test="${partita.data != null}">
+    									<td>
+    										<a href onclick="setIDPartita(${partita.numeroPartita})"
+    										data-toggle="modal" data-target="#data"><c:out value="${partita.data}"/>
+    									</td>
+    								</c:when>
+    							
+    								<c:when test="${partita.data == null}">
+    									<td>
+    										<a href onclick="setIDPartita(${partita.numeroPartita})"
+    										data-toggle="modal" data-target="#data">/
+    									</td>
+    								</c:when>
+    							</c:choose>
+    							
+    							
+    							<c:choose>
+    								<c:when test="${partita.ora != null}">
+    									<td>
+    										<a href onclick="setIDOra(${partita.numeroPartita})"
+    										data-toggle="modal" data-target="#ora"><c:out value="${partita.ora}"/>
+    									</td>
+    								</c:when>
+    							
+    								<c:when test="${partita.ora == null}">
+    									<td>
+    										<a href onclick="setIDOra(${partita.numeroPartita})"
+    										data-toggle="modal" data-target="#ora">/
+    									</td>
+    								</c:when>
+    							</c:choose>
+    							
+    							
+    							<!--<td><c:out value="${partita.campo}"/></td>-->
+    							
+								<c:choose>
+    								<c:when test="${partita.campo != 0}">
+    									<td>
+    										<a href onclick="setIDCampo(${partita.numeroPartita})"
+    										data-toggle="modal" data-target="#campo"><c:out value="${partita.campo}"/>
+    									</td>
+    								</c:when>
+    							
+    								<c:when test="${partita.campo == 0}">
+    									<td>
+    										<a href onclick="setIDCampo(${partita.numeroPartita})"
+    										data-toggle="modal" data-target="#campo">/
+    									</td>
+    								</c:when>
+    							</c:choose>
+    								
+    							<c:choose>
+    								<c:when test="${partita.sfidanteA != null && partita.numeroPartita > (partite.size()/2)}">
+    								
+    									<td>
+    										<a href onclick="setIDTorneo(${partita.numeroPartita})"
+											data-toggle="modal" data-target="#sfidanteA"><c:out value="${partita.sfidanteA}"/></a>
+										</td>
+									</c:when>
+									
+									<c:when test="${partita.sfidanteA != null && partita.numeroPartita <= (partite.size()/2)}">
+										<td><c:out value="${partita.sfidanteA}"/></td>
+									
+    								</c:when>
+    								
+    								<c:otherwise>
+    									<td>vincitore partita <c:out value="${(partita.numeroPartita*2)}"/></td>
+    								</c:otherwise>
+    							</c:choose>
+    							
+    							<c:choose>
+    								<c:when test="${partita.sfidanteB != null && partita.numeroPartita > (partite.size()/2)}">
+    								
+    								
+    									<td>
+    										<a href onclick="setIDTorneo(${partita.numeroPartita})"
+											data-toggle="modal" data-target="#sfidanteB"><c:out value="${partita.sfidanteB}"/></a>
+										</td>
+									</c:when>
+									
+									<c:when test="${partita.sfidanteB != null && partita.numeroPartita <= (partite.size()/2)}">
+										<td><c:out value="${partita.sfidanteB}"/></td>
+									
+									
+    								</c:when>
+    								
+    								<c:otherwise>
+    									<td>vincitore partita <c:out value="${(partita.numeroPartita*2+1)}"/></td>
+    								</c:otherwise>
+    							</c:choose>
+    							
+    							<td><c:out value="${partita.set1.getRisultato()}"/></td>
+    							<td><c:out value="${partita.set2.getRisultato()}"/></td>
+    							<td><c:out value="${partita.set3.getRisultato()}"/></td>
+ 
+    						</tr>
+      						
+    				
+    					</c:forEach>
+    				</tbody>
+
+				</table>
+    		
+			</div>
+		</c:if>
+
+
+
+	<!-- Modale per l'iscrizione (sfidante A)-->
+	<div class="modal fade" id="sfidanteA" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">Nuovo Sfidante</h4>
+				</div>
+				<div class="modal-body">
+
+					<form method="POST" action="<c:url value="/updateSfidante"/>"
+						class="form-horizontal" role="form" id="iscrizioneform">
+
+						<input type="hidden" name="torneo" value="${torneo.id}">
+						<input type="hidden" name="azione" value="A">
+						
+						<div class="form-group">
+							<label for="nome" class="col-sm-2 control-label">Scegli giocatore:</label>
+							<div class="col-sm-offset-2 col-sm-10">
+								<select class="form-control" name="sfidante">
+									<c:forEach var="giocatore" items="${giocatori}">
+										<option><c:out value="${giocatore.email}" /></option>
+									</c:forEach>
+								</select>
+							</div>
+						</div>
+						
+						
+
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="submit" class="btn btn-default">Registra</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+ 
+
+	<!-- Modale per l'iscrizione (sfidante B) -->
+	<div class="modal fade" id="sfidanteB" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">Nuovo Sfidante</h4>
+				</div>
+				<div class="modal-body">
+
+					<form method="POST" action="<c:url value="/updateSfidante"/>"
+						class="form-horizontal" role="form" id="iscrizioneform">
+
+						<input type="hidden" name="torneo" value="${torneo.id}">
+						<input type="hidden" name="azione" value="B">
+						
+						<div class="form-group">
+							<label for="nome" class="col-sm-2 control-label">Scegli giocatore:</label>
+							<div class="col-sm-offset-2 col-sm-10">
+								<select class="form-control" name="sfidante">
+									<c:forEach var="giocatore" items="${giocatori}">
+										<option value="${giocatore.email}"><c:out value="${giocatore.email}" /></option>
+									</c:forEach>
+								</select>
+							</div>
+						</div>
+						
+						
+
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="submit" class="btn btn-default">Registra</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+  
+  
+	<!-- Modale per cambiare Data -->
+	<div class="modal fade" id="data" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">Nuovo Sfidante</h4>
+				</div>
+				<div class="modal-body">
+
+					<form method="POST" action="<c:url value="/updateOrario"/>"
+						class="form-horizontal" role="form" id="iscrizioneform2">
+
+						<input type="hidden" name="torneo" value="${torneo.id}">
+						
+						
+						<div class="form-group">
+							<label for="nome" class="col-sm-2 control-label">Data Partita:</label>
+							<div class="col-sm-offset-2 col-sm-10">
+								<input type="date" name="data">
+								
+							</div>
+						</div>
+						
+						
+
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="submit" class="btn btn-default">Registra</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>  
+
+	<!-- Modale per cambiare Ora -->
+	<div class="modal fade" id="ora" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">Nuovo Sfidante</h4>
+				</div>
+				<div class="modal-body">
+
+					<form method="POST" action="<c:url value="/updateTime"/>"
+						class="form-horizontal" role="form" id="iscrizioneform3">
+
+						<input type="hidden" name="torneo" value="${torneo.id}">
+						
+						
+						<div class="form-group">
+							<label for="nome" class="col-sm-2 control-label">Ora Partita:</label>
+							<div class="col-sm-offset-2 col-sm-10">
+								<input type="time" name="time">
+								
+							</div>
+						</div>
+						
+						
+
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="submit" class="btn btn-default">Registra</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>  
+
+	<!-- Modale per cambiare Campo -->
+	<div class="modal fade" id="campo" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">Nuovo Sfidante</h4>
+				</div>
+				<div class="modal-body">
+
+					<form method="POST" action="<c:url value="/updateCampo"/>"
+						class="form-horizontal" role="form" id="iscrizioneform4">
+
+						<input type="hidden" name="torneo" value="${torneo.id}">
+						
+						
+						<div class="form-group">
+							<label for="nome" class="col-sm-2 control-label">Campo:</label>
+							<div class="col-sm-offset-2 col-sm-10">
+								<select class="form-control" name="campo">
+									<c:forEach var="campo" items="${campi}">
+										<option value="${campo.numero}">campo<c:out value="${campo.numero}" /> <c:out value="${campo.superficie}" /></option>
+									</c:forEach>
+								</select>
+								
+							</div>
+						</div>
+						
+						
+
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="submit" class="btn btn-default">Registra</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>  
+  
+<hr>
+      <footer>
+        <p>&copy; Company 2014</p>
+      </footer>
+    </div> <!-- /container -->
+
+	<script> <!-- E.C. : al posto di '/iscrizione-torneo' ho provato anche '/updateSfidante' ma non funzia lo stesso...cosa ci va?-->
+			 
+	    function setIDTorneo(id) {
+	    	document.getElementById('iscrizioneform').action = "<c:url value='/updateSfidante?id='/>"+id;
+	    	console.log(id);
+	    };   
+    </script>
+    
+    	<script> <!-- devo far UpdateOrarioServlet  -->
+			 
+	    function setIDPartita(id) {
+	    	document.getElementById('iscrizioneform2').action = "<c:url value='/updateOrario?id='/>"+id;
+	    	console.log(id);
+	    };   
+    </script>
+    
+	    	<script> <!-- devo far UpdateTimeServlet  -->
+			 
+	    function setIDOra(id) {
+	    	document.getElementById('iscrizioneform3').action = "<c:url value='/updateTime?id='/>"+id;
+	    	console.log(id);
+	    };   
+    </script>
+    
+    	    <script> <!-- devo far UpdateCampoServlet  -->
+			 
+	    function setIDCampo(id) {
+	    	document.getElementById('iscrizioneform4').action = "<c:url value='/updateCampo?id='/>"+id;
+	    	console.log(id);
+	    };   
+    </script>
+	
+	
+	</body>
+	
+</html>

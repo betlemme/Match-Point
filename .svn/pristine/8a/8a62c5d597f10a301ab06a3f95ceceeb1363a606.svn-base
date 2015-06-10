@@ -1,0 +1,82 @@
+package it.gemmed.database;
+
+import it.gemmed.resource.Iscrizione;
+
+import java.sql.Array;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+
+/**
+ * Fa l'update del profilo di  un arbitro, richiede il passaggio dell'arbitro modificato al costruttore.
+ * 
+ * @author GEMMED
+ * @version 0.1
+ */
+
+public class UpdateIscrizioneDatabase {
+	/**
+	 * The SQL statement to be executed
+	 * 
+	 * Attenzione al cast !!!!
+	 */
+	private static final String STATEMENT = "UPDATE iscrizione SET disponibilita= ? WHERE giocatore = ? AND torneo = ?";
+
+	/**
+	 * The connection to the database
+	 */
+	private final Connection con;
+
+	/**
+	 * The employee to be stored into the database
+	 */
+	private final Iscrizione i;
+
+	/**
+	 * Creates a new object for storing an employee into the database.
+	 * 
+	 * @param con
+	 *            the connection to the database.
+	 * @param player
+	 *            the player to be stored into the database.
+	 */
+	public UpdateIscrizioneDatabase(final Connection con, final Iscrizione i) {
+		this.con = con;
+		this.i = i;
+	}
+
+	/**
+	 * Stores a new employee into the database
+	 * 
+	 * @throws SQLException
+	 *             if any error occurs while storing the employee.
+	 */
+	public void updateIscrizione() throws SQLException {
+
+		PreparedStatement pstmt = null;
+
+		try {
+			pstmt = con.prepareStatement(STATEMENT);
+			
+			Array sql = con.createArrayOf("boolean",  i.getDisponibilita());
+			
+			pstmt.setArray(1, sql);
+			pstmt.setString(2, i.getGiocatore());
+			pstmt.setInt(3, i.getTorneo());
+			
+
+			
+			pstmt.execute();
+
+		} finally {
+			if (pstmt != null) {
+				pstmt.close();
+			}
+
+			con.close();
+		}
+
+	}	
+
+}

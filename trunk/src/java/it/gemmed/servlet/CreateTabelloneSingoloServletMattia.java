@@ -1,0 +1,139 @@
+package it.gemmed.servlet;
+
+import it.gemmed.database.CreatePartitaDatabase;
+import it.gemmed.database.CreatePartitaSingolaDatabase;
+import it.gemmed.database.CreateTorneoDatabase;
+import it.gemmed.database.FindPlayerDatabase;
+import it.gemmed.resource.Giocatore;
+import it.gemmed.resource.PartitaSingola;
+import it.gemmed.resource.Torneo;
+import it.gemmed.resource.Message;
+
+import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Crea un nuovo tabellone per un torneo. 
+ * 
+ * @author GEMMED
+ * @version 1.00
+ */
+@SuppressWarnings("serial")
+public class CreateTabelloneSingoloServletMattia extends AbstractDatabaseServlet {
+
+	/**
+	 * @param req
+	 *            Richiesta HTTP del client.
+	 * @param res
+	 *            Risposta HTTP del server.
+	 * 
+	 * @throws ServletException
+	 *             Se si verificano degli errori eseguendo la servlet.
+	 * @throws IOException
+	 *             Se si verificano degli errori nel comunicazione tra client/server.
+	 */
+	public void doGet(HttpServletRequest req, HttpServletResponse res)
+			throws ServletException, IOException {
+		
+		List<PartitaSingola> p = new ArrayList<PartitaSingola>();
+		List<Giocatore> l = null;
+		int id = -1;
+		PartitaSingola partita =null;
+		Message m = null;
+		
+		try {
+			id = Integer.parseInt(req.getParameter("id"));
+			l = new FindPlayerDatabase(DS.getConnection()).findPlayerByTorneo(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}//try-catch
+		
+		int n = l.size();//numero giocatori iscritti => n-1 partite
+
+		/*la lista di partite p è fatta così: 
+		* le partite sono numerate da 1 a n-1 (la finale è 1, la semifinale 1 è 2 ecc...)
+		* le partite "figlie" di una partita con numeroPartita i  
+		* sono quelle con numero partita 2i e 2i+1.
+		* ora creo n/2-1 partite senza partecipanti
+		*/
+		for (int i = 1; i <= (n-1)/2; i++) {
+			
+			partita = new PartitaSingola(i, id);
+			
+			try {
+				new CreatePartitaSingolaDatabase(DS.getConnection(), partita).createPartita();
+				
+				m = new Message("Partita creata correttamente.");
+
+			} catch (NumberFormatException ex) {
+				m = new Message("Impossibile creare la partita. Input invalido", "E100", ex.getMessage());
+			} catch (SQLException ex) {
+				if (ex.getSQLState().equals("23505")) {
+					m = new Message("Impossibile creare la partita. Esiste già", 
+							"E300", ex.getMessage());
+				} else {
+					m = new Message("Impossibile creare la partita. Errore inaspettato nell'accesso al DB.", 
+							"E200", ex.getMessage());
+				}//if-else
+			}//try-catch
+			p.add(partita);
+		}//for		
+		
+		//ora creo n/2 partite inizializzate coi giocatori iscritti
+		int j = 0;
+		for (int i = ((n-1)/2)+1; i <= n-1; i++) {
+			
+			String giocatoreA = l.get(j).getEmail();
+			j++;
+			String giocatoreB = l.get(j).getEmail();
+			j++;
+			partita = new PartitaSingola(i,id, giocatoreA, giocatoreB);
+			
+			try {
+				new CreatePartitaSingolaDatabase(DS.getConnection(), partita).createPartita();
+				
+				m = new Message("Partita creata correttamente.");
+
+			} catch (NumberFormatException ex) {
+				m = new Message("Impossibile creare la partita. Input invalido", "E100", ex.getMessage());
+			} catch (SQLException ex) {
+				if (ex.getSQLState().equals("23505")) {
+					m = new Message("Impossibile creare la partita. Esiste già", 
+							"E300", ex.getMessage());
+				} else {
+					m = new Message("Impossibile creare la partita. Errore inaspettato nell'accesso al DB.", 
+							"E200", ex.getMessage());
+				}//if-else
+			}//try-catch
+			p.add(partita);
+				
+		}//for
+		
+		// if eseguito solo se il numero di giocatori (n) è dispari: imposta l'ultimo giocatore che rimane nella lista
+		// l (lista di Giocatori) come sfidanteB alla partita numero (n-1)/2, cioè quella partita nell'albero che ha
+		//si ritrova ad avere un solo figlio. il -1 successivo viene dato per il motivo che in una lista il primo 
+		//elemento è in posizione '0'.
+		
+		if(n % 2 != 0 ){
+			p.get( (n-1)/2 -1 ).setSfidanteB( l.get(j).getEmail() );
+		}//if
+		
+	
+		// stores the employee and the message as a request attribute
+		req.setAttribute("tabellone", p);
+		req.setAttribute("message", m);
+		
+		// forwards the control to the createEmployeeResult JSP
+		req.getRequestDispatcher("/profiloTorneo").forward(req, res);
+
+	}//doGet
+
+}//CreateTabelloneSingoloServlet

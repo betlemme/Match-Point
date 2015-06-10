@@ -1,0 +1,37 @@
+package it.gemmed.servlet;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@SuppressWarnings("serial")
+public class LogoutServlet extends HttpServlet {
+	/**
+	 * Logout any user by destroying the session
+	 * @author manuel
+	 * @version 0.1
+	 */
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		req.getSession().invalidate();
+		resp.sendRedirect("home");
+	}
+	
+	/**
+	 * Logout any user by destroying the session
+	 * @author manuel
+	 * @version 0.1
+	 */
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		req.getSession().invalidate();
+		resp.sendRedirect("home");
+	}
+	
+
+}

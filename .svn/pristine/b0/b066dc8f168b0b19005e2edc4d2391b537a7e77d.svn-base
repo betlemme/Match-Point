@@ -1,0 +1,329 @@
+package it.gemmed.resource;
+
+import java.sql.Date;
+
+/**
+ * Represents the data about a player.
+ * 
+ * @author Manuel Zulian
+ * @version 0.1
+ */
+public class Giocatore {
+	private final String nome;
+	private final String cognome;
+	private final Date data_nascita;
+	private String indirizzo;
+	private String telefono;
+	private final String email;
+	private String password;
+	private String tessera;
+	private Date scadenza_tessera;
+	private String classifica;
+	private String circolo;
+	private String classifica_dinamica;
+	private int atp_wta;
+	private int itf;
+	private boolean ismaschio;
+	private int punti_aggiuntivi;
+	
+	/**
+	 * Costruttore non completo
+	 * 
+	 * @param nome
+	 * @param cognome
+	 * @param data_nascita
+	 * @param email
+	 * @param password
+	 * @param ismaschio
+	 */
+	public Giocatore(String nome, String cognome, Date data_nascita,
+			String email, String password, boolean ismaschio) {
+		super();
+		this.nome = nome;
+		this.cognome = cognome;
+		this.data_nascita = data_nascita;
+		this.email = email;
+		this.password = password;
+		this.ismaschio = ismaschio;
+	}
+	
+	/**
+	 * Costruttore non completo
+	 * 
+	 * @param nome
+	 * @param cognome
+	 * @param data_nascita
+	 * @param indirizzo
+	 * @param telefono
+	 * @param email
+	 * @param password
+	 * @param tessera
+	 * @param scadenza_tessera
+	 * @param classifica
+	 * @param circolo
+	 */
+	public Giocatore(String nome, String cognome, Date data_nascita,
+			String indirizzo, String telefono, String email, String password,
+			String tessera, Date scadenza_tessera, String classifica,
+			String circolo) {
+		super();
+		this.nome = nome;
+		this.cognome = cognome;
+		this.data_nascita = data_nascita;
+		this.indirizzo = indirizzo;
+		this.telefono = telefono;
+		this.email = email;
+		this.password = password;
+		this.tessera = tessera;
+		this.scadenza_tessera = scadenza_tessera;
+		this.classifica = classifica;
+		this.circolo = circolo;
+	}
+	
+	/**
+	 * Costruttore non completo per modifica profilo
+	 * 
+	 * @param nome
+	 * @param cognome
+	 * @param data_nascita
+	 * @param telefono
+	 * @param indirizzo
+	 * @param password
+	 */
+	public Giocatore(String email, String nome, String cognome, Date data_nascita,
+			String telefono, String indirizzo, String password) {
+		super();
+		this.email= email;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.data_nascita = data_nascita;
+		this.indirizzo = indirizzo;
+		this.telefono = telefono;
+		this.password = password;
+		
+	}
+
+	
+	/**
+	 * Costruttore completo
+	 * 
+	 * @param nome
+	 * @param cognome
+	 * @param data_nascita
+	 * @param indirizzo
+	 * @param telefono
+	 * @param email
+	 * @param password
+	 * @param tessera
+	 * @param scadenza_tessera
+	 * @param classifica
+	 * @param circolo
+	 * @param classifica_dinamica
+	 * @param atp_wta
+	 * @param itf
+	 * @param ismaschio
+	 * @param punti_aggiuntivi
+	 */
+	public Giocatore(String nome, String cognome, Date data_nascita,
+			String indirizzo, String telefono, String email, String password,
+			String tessera, Date scadenza_tessera, String classifica,
+			String circolo, String classifica_dinamica, int atp_wta, int itf, boolean ismaschio, int punti_aggiuntivi) {
+		super();
+		this.nome = nome;
+		this.cognome = cognome;
+		this.data_nascita = data_nascita;
+		this.indirizzo = indirizzo;
+		this.telefono = telefono;
+		this.email = email;
+		this.password = password;
+		this.tessera = tessera;
+		this.scadenza_tessera = scadenza_tessera;
+		this.classifica = classifica;
+		this.circolo = circolo;
+		this.classifica_dinamica = classifica_dinamica;
+		this.atp_wta = atp_wta;
+		this.itf = itf;
+		this.ismaschio = ismaschio;
+		this.punti_aggiuntivi = punti_aggiuntivi;
+	}
+
+	/**
+	 * @return the nome
+	 */
+	public String getNome() {
+		return nome;
+	}
+	/**
+	 * @return the cognome
+	 */
+	public String getCognome() {
+		return cognome;
+	}
+	/**
+	 * @return the data_nascita
+	 */
+	public Date getData_nascita() {
+		return data_nascita;
+	}
+	/**
+	 * @return the indirizzo
+	 */
+	public String getIndirizzo() {
+		return indirizzo;
+	}
+	/**
+	 * @return the telefono
+	 */
+	public String getTelefono() {
+		return telefono;
+	}
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+	/**
+	 * @return the tessera
+	 */
+	public String getTessera() {
+		return tessera;
+	}
+	/**
+	 * @return the scadenza_tessere
+	 */
+	public Date getScadenza_tessera() {
+		return scadenza_tessera;
+	}
+	/**
+	 * @return the classifica
+	 */
+	public String getClassifica() {
+		return classifica;
+	}
+	/**
+	 * @return the circolo
+	 */
+	public String getCircolo() {
+		return circolo;
+	}
+
+	/**
+	 * @param indirizzo the indirizzo to set
+	 */
+	public void setIndirizzo(String indirizzo) {
+		this.indirizzo = indirizzo;
+	}
+
+	/**
+	 * @param telefono the telefono to set
+	 */
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	/**
+	 * @param tessera the tessera to set
+	 */
+	public void setTessera(String tessera) {
+		this.tessera = tessera;
+	}
+
+	/**
+	 * @param scadenza_tessere the scadenza_tessere to set
+	 */
+	public void setScadenza_tessera(Date scadenza_tessera) {
+		this.scadenza_tessera = scadenza_tessera;
+	}
+
+	/**
+	 * @param classifica the classifica to set
+	 */
+	public void setClassifica(String classifica) {
+		this.classifica = classifica;
+	}
+
+	/**
+	 * @param circolo the circolo to set
+	 */
+	public void setCircolo(String circolo) {
+		this.circolo = circolo;
+	}
+	
+	/**
+	 * @param classifica_dinamica
+	 */
+	public void setClassificaDinamica(String classifica_dinamica) {
+		this.classifica_dinamica = classifica_dinamica;
+	}
+
+	/**
+	 * @param atp_wta
+	 */
+	public void setAtpWta(int atp_wta) {
+		this.atp_wta = atp_wta;
+	}
+	
+	/**
+	 * @param itf
+	 */
+	public void setItf(int itf) {
+		this.itf = itf;
+	}
+
+	/**
+	 * @return classifica_dinamica
+	 */
+	public String getClassificaDinamica() {
+		return classifica_dinamica;
+	}
+	
+	/**
+	 * @return atp_wta
+	 */
+	public int getAtpWta() {
+		return atp_wta;
+	}
+	
+	/**
+	 * @return itf
+	 */
+	public int getItf() {
+		return itf;
+	}
+
+	/**
+	 * @return ismaschio
+	 */
+	public boolean getIsMaschio() {
+		return ismaschio;
+	}
+	
+	/**
+	 * @return punti_aggiuntivi
+	 */
+	public int getPuntiAggiuntivi() {
+		return punti_aggiuntivi;
+	}
+	
+	/**
+	 * @param punti_aggiuntivi
+	 */
+	public void setPuntiAggiuntivi(int punti_aggiuntivi) {
+		this.punti_aggiuntivi = punti_aggiuntivi;
+	}
+	
+	/**
+	 * @param indirizzo the indirizzo to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+}

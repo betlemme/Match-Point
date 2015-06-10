@@ -1,0 +1,44 @@
+package it.gemmed.servlet;
+
+import it.gemmed.resource.Torneo;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.tumblr.jumblr.JumblrClient;
+import com.tumblr.jumblr.types.Blog;
+import com.tumblr.jumblr.types.Post;
+
+@SuppressWarnings("serial")
+public class HomePageServlet extends AbstractDatabaseServlet {
+	protected void doGet(HttpServletRequest req, HttpServletResponse res)
+			throws ServletException, IOException {
+
+		// Authenticate via OAuth
+		JumblrClient client = new JumblrClient(
+		  "Qh91mAey1fne489Y5YFwr7Xr5gbZkanvIPw1ah6WWAbLo2EB20",
+		  "T6hdiqLe6w0SYINWwO3kuIscYm0lNanbxY9KR4IGrb5Tf9tt06"
+		);
+		client.setToken(
+		  "VrNKJD0sbepWLmNGtJqwzq4s6qc5qd9InX1fv3fgljeAaDZDDz",
+		  "t1RVuseWjRAuG33vstMpHTLDSoIfE9Ft0VyVJ75cLqiiD6FqT5"
+		);
+
+		
+		Blog blog = client.blogInfo("gemmed-match-point");
+		
+		List<Post> l = blog.posts();
+		
+		req.getSession().setAttribute("posts", l);
+
+		req.getRequestDispatcher("/jsp/index.jsp").forward(req, res);
+
+	}
+
+}

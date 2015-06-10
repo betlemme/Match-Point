@@ -1,0 +1,41 @@
+package it.gemmed.servlet;
+
+import it.gemmed.database.FindArbitroDatabase;
+import it.gemmed.database.FindTorneoDatabase;
+import it.gemmed.resource.Arbitro;
+import it.gemmed.resource.Message;
+import it.gemmed.resource.Torneo;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+@SuppressWarnings("serial")
+public class ProfiloFederazioneServlet extends AbstractDatabaseServlet {
+	protected void doPost(HttpServletRequest req, HttpServletResponse res)
+			throws ServletException, IOException {
+
+		Message m = null;
+		List<Torneo> p;
+		List<Arbitro> a;
+		try {
+			p = new FindTorneoDatabase(DS.getConnection()).findTorneo();
+			a = new FindArbitroDatabase(DS.getConnection()).findArbitro();
+
+			HttpSession session = req.getSession();
+			session.setAttribute("tornei", p);
+			session.setAttribute("arbitri", a);
+			req.getRequestDispatcher("/jsp/profilo-federazione.jsp").forward(req, res);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+}

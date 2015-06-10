@@ -1,0 +1,49 @@
+package it.gemmed.resource;
+
+import java.util.BitSet;
+
+/**
+ * Rappresenta l'iscrizione a un torneo
+ * @author manuel
+ *
+ */
+public class Iscrizione {
+	private final String giocatore;
+	private final BitSet disponibilita;
+	private final int torneo;
+	
+	/**
+	 * @param giocatore
+	 * @param disponibilita
+	 * @param torneo
+	 */
+	public Iscrizione(String giocatore, BitSet disponibilita, int torneo) {
+		super();
+		this.giocatore = giocatore;
+		this.disponibilita = disponibilita;
+		this.torneo = torneo;
+	}
+
+	/**
+	 * @return the giocatore
+	 */
+	public String getGiocatore() {
+		return giocatore;
+	}
+
+	/**
+	 * @return the disponibilita
+	 */
+	public BitSet getDisponibilita() {
+		return disponibilita;
+	}
+
+	/**
+	 * @return the torneo
+	 */
+	public int getTorneo() {
+		return torneo;
+	}
+	
+	
+}

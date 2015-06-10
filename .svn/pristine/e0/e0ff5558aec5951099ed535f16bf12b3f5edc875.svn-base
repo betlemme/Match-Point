@@ -1,0 +1,24 @@
+package it.gemmed.resource;
+
+/**
+ * Risultati possibili di un set (DA COMPLETARE) (IL DATABASE E MEGLIO FARLO CON LE SCRITTE seizero anzichè 6-0, sennò 
+ * è complicato in java)
+ * @author manuel
+ *
+ */
+public enum Risultato {
+	seizero,
+	seiuno,
+	seidue,
+	seitre,
+	seiquattro,
+	settecinque,
+	settesei,
+	zerosei,
+	unosei,
+	duesei,
+	tresei,
+	quattrosei,
+	cinquesette,
+	seisette
+}

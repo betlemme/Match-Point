@@ -1,0 +1,85 @@
+package it.gemmed.database;
+
+import it.gemmed.resource.Torneo;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+
+/**
+ * Fa l'update di un torneo, richiede il passaggio del torneo modificato al costruttore.
+ * 
+ * @author Manuel Zulian
+ * @version 0.1
+ */
+
+public class UpdateTorneoDatabase {
+	/**
+	 * The SQL statement to be executed
+	 * 
+	 * Attenzione al cast !!!!
+	 */
+	private static final String STATEMENT = "UPDATE torneo SET nome= ?, categoria=?, data_inizio= ?, data_fine= ?, arbitro= ?, federazione= ?, circolo= ?, tipologia= ?::tiposcontro, convalidato= ?::convalida WHERE id= ?";
+
+	/**
+	 * The connection to the database
+	 */
+	private final Connection con;
+
+	/**
+	 * The employee to be stored into the database
+	 */
+	private final Torneo torneo;
+
+	/**
+	 * Creates a new object for storing an employee into the database.
+	 * 
+	 * @param con
+	 *            the connection to the database.
+	 * @param player
+	 *            the player to be stored into the database.
+	 */
+	public UpdateTorneoDatabase(final Connection con, final Torneo t) {
+		this.con = con;
+		this.torneo = t;
+	}
+
+	/**
+	 * Stores a new employee into the database
+	 * 
+	 * @throws SQLException
+	 *             if any error occurs while storing the employee.
+	 */
+	public void updateTorneo() throws SQLException {
+
+		PreparedStatement pstmt = null;
+
+		try {
+			pstmt = con.prepareStatement(STATEMENT);
+			pstmt.setString(1, torneo.getNome());
+			pstmt.setString(2, torneo.getCategoria());
+			pstmt.setDate(3, torneo.getData_inizio());
+			pstmt.setDate(4, torneo.getData_fine());
+			pstmt.setString(5, torneo.getArbitro());
+			pstmt.setString(6, torneo.getFederazione());
+			pstmt.setString(7, torneo.getCircolo());
+			pstmt.setString(8, torneo.getTipologia());
+			pstmt.setString(9, torneo.getConvalidato());
+			pstmt.setInt(10, torneo.getId());
+			
+
+
+			pstmt.execute();
+
+		} finally {
+			if (pstmt != null) {
+				pstmt.close();
+			}
+
+			con.close();
+		}
+
+	}	
+
+}

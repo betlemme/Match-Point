@@ -1,0 +1,70 @@
+package it.gemmed.servlet;
+
+import it.gemmed.database.FindPartitaDatabase;
+import it.gemmed.database.FindPlayerDatabase;
+import it.gemmed.database.FindTorneoDatabase;
+import it.gemmed.database.UpdatePartitaSingolaDatabase;
+import it.gemmed.resource.Giocatore;
+import it.gemmed.resource.Message;
+import it.gemmed.resource.PartitaSingola;
+import it.gemmed.resource.Risultato;
+import it.gemmed.resource.Torneo;
+import it.gemmed.resource.Circolo;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+@SuppressWarnings("serial")
+public class UpdateSfidanteServlet extends AbstractDatabaseServlet {
+	protected void doGet(HttpServletRequest req, HttpServletResponse res)
+			throws ServletException, IOException {
+		
+		String azione = req.getParameter("azione");
+
+		int id = -1;
+		int numeroPartita = -1;
+		String sfidante;
+		Message m = null;
+		
+		
+		try {
+
+			id = Integer.parseInt(req.getParameter("torneo"));
+			numeroPartita = Integer.parseInt(req.getParameter("id"));//è id e non numero_partita perchè di si, ma è giusto
+			sfidante = req.getParameter("sfidante");
+			
+			PartitaSingola partita = new PartitaSingola(numeroPartita, id);
+			if(azione.equals("A")) {
+				partita.setSfidanteA(sfidante); 
+				new UpdatePartitaSingolaDatabase(DS.getConnection(), partita).updateSfidanteA(sfidante);	
+			    }
+			else {
+				partita.setSfidanteB(sfidante);
+				new UpdatePartitaSingolaDatabase(DS.getConnection(), partita).updateSfidanteB(sfidante);
+			}
+			
+			
+			
+			m = new Message("aggiornamento riuscito");
+		}  catch (NumberFormatException ex) {
+			log(ex.getMessage());
+		} catch (SQLException ex) {
+			log(ex.getMessage());
+		}
+			
+			req.setAttribute("id", id);
+			req.setAttribute("numeroPartita", numeroPartita);
+			
+			req.setAttribute("message", m);
+			req.getRequestDispatcher("/profiloTorneoArbitro").forward(req, res);
+		 
+
+	}
+
+}

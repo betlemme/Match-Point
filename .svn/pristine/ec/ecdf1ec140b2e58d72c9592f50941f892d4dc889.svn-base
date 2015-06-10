@@ -1,0 +1,83 @@
+package it.gemmed.servlet;
+
+import it.gemmed.database.FindPartitaDatabase;
+import it.gemmed.database.FindPlayerDatabase;
+import it.gemmed.database.FindTorneoDatabase;
+import it.gemmed.resource.Giocatore;
+import it.gemmed.resource.Message;
+import it.gemmed.resource.PartitaSingola;
+import it.gemmed.resource.Torneo;
+import it.gemmed.resource.Circolo;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+/**
+ * Servlet che genera la pagina html di una partita di un dato torneo
+ * 
+ * @author GEMMED
+ * @version 1.00
+ */
+@SuppressWarnings("serial")
+public class ProfiloPartitaServlet extends AbstractDatabaseServlet {
+	/**
+	 * @param req
+	 *            Richiesta HTTP del client.
+	 * @param res
+	 *            Risposta HTTP del server.
+	 * 
+	 * @throws ServletException
+	 *             Se si verificano degli errori eseguendo la servlet.
+	 * @throws IOException
+	 *             Se si verificano degli errori nel comunicazione tra client/server.
+	 */
+	protected void doGet(HttpServletRequest req, HttpServletResponse res)
+			throws ServletException, IOException {
+
+		int id;
+		int numeroPartita;
+		Torneo torneo = null;
+		Message m = null;
+		PartitaSingola sfidanteA = null;
+		PartitaSingola sfidanteB = null;
+		PartitaSingola partita = null;
+		
+		String set1 = null, set2 = null, set3 = null;
+		
+		try {
+			id = Integer.parseInt(req.getParameter("id"));
+			numeroPartita = Integer.parseInt(req.getParameter("numeroPartita"));
+			torneo = new FindTorneoDatabase(DS.getConnection()).findTorneo(id);
+			partita = new FindPartitaDatabase(DS.getConnection()).findPartita(id, numeroPartita);
+			//estraggo qui i valori dei set perchè non riesco a farlo dalla pagina jsp:
+			set1 = (partita.getSet1()!=null ? partita.getSet1().getRisultato() : null);
+			set2 = (partita.getSet2()!=null ? partita.getSet2().getRisultato() : null);
+			set3 = (partita.getSet3()!=null ? partita.getSet3().getRisultato() : null);
+			
+			sfidanteA = new FindPartitaDatabase(DS.getConnection()).findPartita(id, (2*numeroPartita));
+			sfidanteB = new FindPartitaDatabase(DS.getConnection()).findPartita(id, (2*numeroPartita+1));
+			
+			m = new Message("Employees successfully searched.");
+		}  catch (NumberFormatException ex) {
+			m = new Message("Invalid input parameters: salary must be integer.", 
+					"E100", ex.getMessage());
+		} catch (SQLException ex) {
+				m = new Message("unexpected error while accessing the database.", 
+						"E200", ex.getMessage());
+		}
+			req.setAttribute("torneo", torneo);
+			req.setAttribute("partita", partita);
+
+			req.setAttribute("sfidanteA", sfidanteA);
+			req.setAttribute("sfidanteB", sfidanteB);
+			req.getRequestDispatcher("/jsp/profilo-partita.jsp").forward(req, res);
+		 
+
+	}
+
+}

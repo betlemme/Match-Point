@@ -1,0 +1,78 @@
+package it.gemmed.servlet;
+
+/**
+ * QUESTA SERVLET ANDREBBE UNIFICATA CON GESTIONETORNEI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
+import it.gemmed.database.FindTorneoDatabase;
+import it.gemmed.database.UpdateTorneoDatabase;
+import it.gemmed.resource.Torneo;
+import it.gemmed.resource.Message;
+
+import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Creates a new employee into the database. 
+ * 
+ * @author Nicola Ferro
+ * @version 1.00
+ */
+@SuppressWarnings("serial")
+public class GestioneTorneiServlet extends AbstractDatabaseServlet {
+
+	/**
+	 * Creates a new employee into the database. 
+	 * 
+	 * @param req
+	 *            the HTTP request from the client.
+	 * @param res
+	 *            the HTTP response from the server.
+	 * 
+	 * @throws ServletException
+	 *             if any error occurs while executing the servlet.
+	 * @throws IOException
+	 *             if any error occurs in the client/server communication.
+	 */
+	public void doPost(HttpServletRequest req, HttpServletResponse res)
+			throws ServletException, IOException {
+		String azione = req.getParameter("azione");
+		
+		if(azione.equals("associa")) {
+			String temp = req.getParameter("id");
+			int id = Integer.parseInt(temp);
+			String arbitro = req.getParameter("arbitro");
+			String federazione = req.getParameter("federazione");
+			try {
+				Torneo t = new FindTorneoDatabase(DS.getConnection()).findTorneo(id);
+				t.setArbitro(arbitro);
+				t.setConvalidato("si");
+				t.setFederazione(federazione);
+				new UpdateTorneoDatabase(DS.getConnection(), t).updateTorneo();
+				
+				req.getRequestDispatcher("/profiloFederazione").forward(req, res);
+/*				
+			    res.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
+			    res.setCharacterEncoding("UTF-8"); // You want world domination, huh?
+			    res.getWriter().write("ok");       // Write response body.
+*/			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+}

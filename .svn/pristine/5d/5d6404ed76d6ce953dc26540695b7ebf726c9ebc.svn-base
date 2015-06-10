@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app id="match-point-webapp-jdbc" version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	
+	<resource-ref>
+      <description>Connection pool to the database</description>
+      <res-ref-name>jdbc/studenti</res-ref-name>
+      <res-type>javax.sql.DataSource</res-type>
+      <res-auth>Container</res-auth>
+  	</resource-ref>	
+    
+	<display-name>Match Point</display-name>
+	<description>Webapp per la gestione di tornei tennistici</description>
+	
+	<welcome-file-list>
+		<welcome-file>home</welcome-file>
+	</welcome-file-list>
+	
+	<servlet>
+		<servlet-name>Login</servlet-name>
+		<servlet-class>it.gemmed.servlet.LoginServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>HomePage</servlet-name>
+		<servlet-class>it.gemmed.servlet.HomePageServlet</servlet-class>
+	</servlet>	
+	
+	<servlet>
+		<servlet-name>Logout</servlet-name>
+		<servlet-class>it.gemmed.servlet.LogoutServlet</servlet-class>
+	</servlet>	
+	
+	<servlet>
+		<servlet-name>CreateCircolo</servlet-name>
+		<servlet-class>it.gemmed.servlet.CreateCircoloServlet</servlet-class>
+	</servlet>	
+	
+	<servlet>
+		<servlet-name>CreateArbitro</servlet-name>
+		<servlet-class>it.gemmed.servlet.CreateArbitroServlet</servlet-class>
+	</servlet>	
+	
+	<servlet>
+		<servlet-name>CreateUtenteFederale</servlet-name>
+		<servlet-class>it.gemmed.servlet.CreateUtenteFederaleServlet</servlet-class>
+	</servlet>	
+	
+	<servlet>
+		<servlet-name>CreateTabelloneSingolo</servlet-name>
+		<servlet-class>it.gemmed.servlet.CreateTabelloneSingoloServlet</servlet-class>
+	</servlet>	
+	
+	<servlet>
+		<servlet-name>ProfiloFederazione</servlet-name>
+		<servlet-class>it.gemmed.servlet.ProfiloFederazioneServlet</servlet-class>
+	</servlet>	
+	
+	<servlet>
+		<servlet-name>ProfiloCircolo</servlet-name>
+		<servlet-class>it.gemmed.servlet.ProfiloCircoloServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ProfiloArbitro</servlet-name>
+		<servlet-class>it.gemmed.servlet.ProfiloArbitroServlet</servlet-class>
+	</servlet>	
+	
+	<servlet>
+		<servlet-name>ProfiloGiocatore</servlet-name>
+		<servlet-class>it.gemmed.servlet.ProfiloGiocatoreServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>GestioneTorneo</servlet-name>
+		<servlet-class>it.gemmed.servlet.GestioneTorneiServlet</servlet-class>
+	</servlet>	
+	
+	<servlet>
+		<servlet-name>GestioneGiocatori</servlet-name>
+		<servlet-class>it.gemmed.servlet.GestioneGiocatoriServlet</servlet-class>
+	</servlet>		
+	
+	<servlet>
+		<servlet-name>ProfiloTorneo</servlet-name>
+		<servlet-class>it.gemmed.servlet.ProfiloTorneoServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ProfiloPartita</servlet-name>
+		<servlet-class>it.gemmed.servlet.ProfiloPartitaServlet</servlet-class>
+	</servlet>	
+	
+	<servlet>
+		<servlet-name>IscrizioneTorneo</servlet-name>
+		<servlet-class>it.gemmed.servlet.IscrizioneTorneoServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>CreateTabellone</servlet-name>
+		<servlet-class>it.gemmed.servlet.CreateTabelloneServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>UpdatePartitaSingola</servlet-name>
+		<servlet-class>it.gemmed.servlet.UpdatePartitaSingolaServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>Login</servlet-name>
+		<url-pattern>/login</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Logout</servlet-name>
+		<url-pattern>/logout</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet-mapping>
+		<servlet-name>IscrizioneTorneo</servlet-name>
+		<url-pattern>/iscrizione-torneo</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>CreateCircolo</servlet-name>
+		<url-pattern>/create-circolo</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>CreateTabellone</servlet-name>
+		<url-pattern>/create-tabellone</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet-mapping>
+		<servlet-name>CreateTabelloneSingolo</servlet-name>
+		<url-pattern>/create-tabellone-singolo</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>CreateUtenteFederale</servlet-name>
+		<url-pattern>/create-utente-federale</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet-mapping>
+		<servlet-name>CreateArbitro</servlet-name>
+		<url-pattern>/create-arbitro</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet-mapping>
+		<servlet-name>ProfiloFederazione</servlet-name>
+		<url-pattern>/profiloFederazione</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet-mapping>
+		<servlet-name>ProfiloCircolo</servlet-name>
+		<url-pattern>/profiloCircolo</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ProfiloPartita</servlet-name>
+		<url-pattern>/profiloPartita</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ProfiloGiocatore</servlet-name>
+		<url-pattern>/profiloGiocatore</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet-mapping>
+		<servlet-name>ProfiloArbitro</servlet-name>
+		<url-pattern>/profiloArbitro</url-pattern>
+	</servlet-mapping>			
+	
+	<servlet-mapping>
+		<servlet-name>GestioneTorneo</servlet-name>
+		<url-pattern>/gestione-torneo</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet-mapping>
+		<servlet-name>GestioneGiocatori</servlet-name>
+		<url-pattern>/gestione-giocatore</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet-mapping>
+		<servlet-name>ProfiloTorneo</servlet-name>
+		<url-pattern>/profiloTorneo</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>UpdatePartitaSingola</servlet-name>
+		<url-pattern>/updatePartitaSingola</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>HomePage</servlet-name>
+		<url-pattern>/home</url-pattern>
+	</servlet-mapping>	
+	
+</web-app>

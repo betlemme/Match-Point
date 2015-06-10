@@ -1,0 +1,77 @@
+package it.gemmed.database;
+
+import it.gemmed.resource.Giocatore;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+/**
+ * Creates a new player into the database. Only the not null fields are required,
+ * to set the other fields use the updateplayer class.
+ * 
+ * @author Manuel Zulian
+ * @version 0.1
+ */
+
+public class CreatePlayerDatabase {
+	/**
+	 * The SQL statement to be executed
+	 */
+	private static final String STATEMENT = "INSERT INTO giocatore (nome, cognome, data_nascita, email, password) VALUES (?, ?, ?, ?, ?)";
+
+	/**
+	 * The connection to the database
+	 */
+	private final Connection con;
+
+	/**
+	 * The employee to be stored into the database
+	 */
+	private final Giocatore giocatore;
+
+	/**
+	 * Creates a new object for storing an employee into the database.
+	 * 
+	 * @param con
+	 *            the connection to the database.
+	 * @param player
+	 *            the player to be stored into the database.
+	 */
+	public CreatePlayerDatabase(final Connection con, final Giocatore player) {
+		this.con = con;
+		this.giocatore = player;
+	}
+
+	/**
+	 * Stores a new employee into the database
+	 * 
+	 * @throws SQLException
+	 *             if any error occurs while storing the employee.
+	 */
+	public void createEmployee() throws SQLException {
+
+		PreparedStatement pstmt = null;
+
+		try {
+			pstmt = con.prepareStatement(STATEMENT);
+			pstmt.setString(1, giocatore.getNome());
+			pstmt.setString(2, giocatore.getCognome());
+			pstmt.setDate(3, giocatore.getData_nascita());
+			pstmt.setString(4, giocatore.getEmail());
+			pstmt.setString(5, giocatore.getPassword());
+
+
+			pstmt.execute();
+
+		} finally {
+			if (pstmt != null) {
+				pstmt.close();
+			}
+
+			con.close();
+		}
+
+	}	
+
+}

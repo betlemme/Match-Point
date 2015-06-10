@@ -1,0 +1,68 @@
+package it.gemmed.servlet;
+
+import it.gemmed.database.CreateIscrizioneDatabase;
+import it.gemmed.resource.Circolo;
+import it.gemmed.resource.Iscrizione;
+import it.gemmed.resource.Message;
+
+import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.BitSet;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+@SuppressWarnings("serial")
+public class IscrizioneTorneoServlet extends AbstractDatabaseServlet {
+
+	public void doPost(HttpServletRequest req, HttpServletResponse res)
+			throws ServletException, IOException {
+		
+		Iscrizione i = null;
+		
+		// request parameters
+		int torneo;
+		BitSet disponibilita;
+		String emailGiocatore;
+		
+		Message m;
+		
+		try{
+			// retrieves the request parameters
+			this.log(req.getParameter("id")+" @@@@@@@@@@@@@@@@@@@@@@");
+			torneo = Integer.parseInt(req.getParameter("id"));
+			
+			disponibilita = null;
+			
+			emailGiocatore = req.getParameter("email");
+			
+			// creates a new employee from the request parameters
+			i = new Iscrizione(emailGiocatore, disponibilita, torneo);
+
+			// creates a new object for accessing the database and stores the employee
+			new CreateIscrizioneDatabase(DS.getConnection(), i).createIscrizione();
+			
+			m = new Message("Iscrizione avvenuta");
+
+		} catch (NumberFormatException ex) {
+			m = new Message("Valore di id torneo malformato.", 
+					"E100", ex.getMessage());
+		} catch (SQLException ex) {
+				m = new Message("Cannot create the employee: unexpected error while accessing the database.", 
+						"E200", ex.getMessage());
+		}
+		
+		// stores the employee and the message as a request attribute
+		req.setAttribute("iscrizione", i);
+		req.setAttribute("message", m);
+		
+		// Send redirect perchè sennò si lamenta che non c'è il metodo get/post
+		res.sendRedirect("profiloTorneo");
+
+
+	}
+
+}

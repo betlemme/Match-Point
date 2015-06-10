@@ -1,0 +1,168 @@
+package it.gemmed.database;
+
+import it.gemmed.resource.Circolo;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class FindCircoloDatabase {
+	/**
+	 * The SQL statement to be executed
+	 */
+	private static final String STATEMENT = "SELECT * FROM circolo WHERE email=?";
+	
+	/**
+	 * The SQL statement to be executed
+	 */
+	private static final String STATEMENT_ALL = "SELECT * FROM circolo";
+	
+	/**
+	 * The SQL statement to be executed
+	 */
+	private static final String STATEMENTTORNEO = "SELECT circolo FROM torneo WHERE id = ?";
+
+	/**
+	 * The connection to the database
+	 */
+	private final Connection con;
+
+	/**
+	 * The results of the search.
+	 */
+	private final List<Circolo> circoli;
+	
+	/**
+	 * The salary of the employee
+	 */
+	private String email;
+
+	/**
+	 * Creates a new object for storing an employee into the database.
+	 * 
+	 * @param con
+	 *            the connection to the database.
+	 * @param player
+	 *            the player to be stored into the database.
+	 */
+	public FindCircoloDatabase(final Connection con) {
+		this.con = con;
+		this.circoli = new ArrayList<Circolo>();
+	}
+
+	/**
+	 * Seleziona tutti i circoli
+	 * @return 
+	 * 
+	 * @throws SQLException
+	 *             if any error occurs while storing the employee.
+	 */
+	public List<Circolo> findCircolo() throws SQLException {
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			pstmt = con.prepareStatement(STATEMENT_ALL);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				circoli.add(new Circolo(rs.getString("nome"), rs.getString("indirizzo"), rs.getString("telefono"),
+						rs.getString("email"), rs.getString("password")));
+			}
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			
+			if (pstmt != null) {
+				pstmt.close();
+			}
+
+			con.close();
+		}
+		return circoli;
+
+	}	
+	
+	/**
+	 * Seleziona tutti i circoli
+	 * @return 
+	 * 
+	 * @throws SQLException
+	 *             if any error occurs while storing the employee.
+	 */
+	public List<Circolo> findCircolo(String email) throws SQLException {
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			pstmt = con.prepareStatement(STATEMENT);
+			pstmt.setString(1, email);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				circoli.add(new Circolo(rs.getString("nome"),
+						rs.getString("email"), rs.getString("password")));
+			}
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			
+			if (pstmt != null) {
+				pstmt.close();
+			}
+
+			con.close();
+		}
+		return circoli;
+
+	}	
+	
+	
+	/**
+	 * Seleziona tutti i circoli
+	 * @return 
+	 * 
+	 * @throws SQLException
+	 *             if any error occurs while storing the employee.
+	 */
+	public String findCircolo(int torneo) throws SQLException {
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String circolo = null;
+
+		try {
+			pstmt = con.prepareStatement(STATEMENTTORNEO);
+			pstmt.setInt(1, torneo);
+
+			rs = pstmt.executeQuery();
+			while (rs.next()) {circolo = rs.getString("circolo");}
+			
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			
+			if (pstmt != null) {
+				pstmt.close();
+			}
+
+			con.close();
+		}
+		return circolo;
+
+	}
+
+}

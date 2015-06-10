@@ -1,0 +1,43 @@
+package it.gemmed.servlet;
+
+import it.gemmed.database.FindCampoDatabase;
+import it.gemmed.database.FindTorneoDatabase;
+import it.gemmed.resource.Campo;
+import it.gemmed.resource.Message;
+import it.gemmed.resource.Torneo;
+import it.gemmed.resource.Circolo;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+@SuppressWarnings("serial")
+public class ProfiloCircoloServlet extends AbstractDatabaseServlet {
+	
+	protected void doPost(HttpServletRequest req, HttpServletResponse res)
+			throws ServletException, IOException {
+
+		Message m = null;
+		List<Torneo> p;
+		List<Campo> c;
+		Circolo circolo = (Circolo) req.getSession().getAttribute("circolo");
+		String emailCircolo = circolo.getEmail();
+		try {
+			p = new FindTorneoDatabase(DS.getConnection()).findTorneo(emailCircolo);
+			c= new FindCampoDatabase(DS.getConnection()).findCampi(emailCircolo);
+
+			req.setAttribute("campi", c);
+			req.setAttribute("tornei", p);
+			req.getRequestDispatcher("/jsp/profilo-circolo.jsp").forward(req, res);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	} // doPost
+}

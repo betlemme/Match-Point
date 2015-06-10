@@ -1,0 +1,201 @@
+package it.gemmed.servlet;
+
+import it.gemmed.database.CreateTorneoDatabase;
+import it.gemmed.database.FindTorneoDatabase;
+import it.gemmed.database.UpdateTorneoDatabase;
+import it.gemmed.resource.Torneo;
+import it.gemmed.resource.Message;
+
+import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.tumblr.jumblr.JumblrClient;
+import com.tumblr.jumblr.types.QuotePost;
+import com.tumblr.jumblr.types.User;
+
+/**
+ * Servlet che a seconda del parametro 'azione' permette rispettivamente di 
+ * convalidare da parte della federazione un torneo assegnandoli un arbitro, 
+ * di creare un nuovo torneo da sottoporre alla federazione e di postare un 
+ * messaggio sul profilo tumblr da parte di un circolo col nome del torneo 
+ * appena creato.
+ * 
+ * @author GEMMED
+ * @version 1.00
+ */
+@SuppressWarnings("serial")
+public class GestioneTorneiServlet extends AbstractDatabaseServlet {
+
+	/**
+	 * @param req
+	 *            Richiesta HTTP del client.
+	 * @param res
+	 *            Risposta HTTP del server.
+	 * 
+	 * @throws ServletException
+	 *             Se si verificano degli errori eseguendo la servlet.
+	 * @throws IOException
+	 *      
+	 */
+	public void doPost(HttpServletRequest req, HttpServletResponse res)
+			throws ServletException, IOException {
+		String azione = req.getParameter("azione");
+		
+		/**
+		 * Associa un torneo a un arbitro
+		 */
+		if(azione.equals("associa")) {
+			String temp = req.getParameter("id");
+			int id = Integer.parseInt(temp);
+			String arbitro = req.getParameter("arbitro");
+			String federazione = req.getParameter("federazione");
+			try {
+				Torneo t = new FindTorneoDatabase(DS.getConnection()).findTorneo(id);
+				t.setArbitro(arbitro);
+				t.setConvalidato("si");
+				t.setFederazione(federazione);
+				new UpdateTorneoDatabase(DS.getConnection(), t).updateTorneo();
+				
+				req.getRequestDispatcher("/profiloFederazione").forward(req, res);
+			} catch (SQLException e) {
+				log(e.getMessage());
+			}
+		}
+		
+		/**
+		 * Crea un torneo
+		 */
+		if(azione.equals("crea")) {
+			// request parameters
+			String nome = null;
+			Date data_inizio = null;
+			Date data_fine = null;
+			Date iscrizione_inizio = null;
+			Date iscrizione_fine = null;
+			String circolo = null;
+			String tipologia = null;
+
+			// model
+			Torneo t  = null;
+			Message m = null;
+
+			try{
+				// retrieves the request parameters
+				nome = req.getParameter("nome");
+				data_inizio = Date.valueOf(req.getParameter("data_inizio"));
+				data_fine = Date.valueOf(req.getParameter("data_fine"));
+				iscrizione_inizio = Date.valueOf(req.getParameter("iscrizione_inizio"));
+				iscrizione_fine = Date.valueOf(req.getParameter("iscrizione_fine"));
+				circolo = req.getParameter("circolo");
+				tipologia = req.getParameter("tipologia");
+
+				// creates a new employee from the request parameters
+				t = new Torneo(nome, data_inizio, data_fine, iscrizione_inizio, iscrizione_fine, circolo, tipologia, "approvare");
+
+				// creates a new object for accessing the database and stores the employee
+				new CreateTorneoDatabase(DS.getConnection(), t).createTorneo();
+				
+				m = new Message("Torneo successfully created.");
+				postTumblr(t);
+
+			} catch (NumberFormatException ex) {
+				m = new Message("Cannot create the employee. Invalid input parameters: identifier, age, and salary must be integer.", 
+						"E100", ex.getMessage());
+				log(ex.getMessage());
+			} catch (SQLException ex) {
+					m = new Message("Cannot create the employee: unexpected error while accessing the database.", 
+							"E200", ex.getMessage());
+					log(ex.getMessage());
+			}
+			
+			req.setAttribute("torneo", t);
+			req.setAttribute("message", m);
+			
+			req.getRequestDispatcher("/profiloCircolo").forward(req, res);
+		}
+		/**
+		 * Posta su tumblr
+		 */
+		if(azione.equals("posta")) {
+			// request parameters
+			String post = null;
+
+			try{
+				// retrieves the request parameters
+				post = req.getParameter("post");
+				
+				post(post);
+			}catch (Exception ex) {
+					log(ex.getMessage());
+			}
+			
+			req.getRequestDispatcher("/profiloCircolo").forward(req, res);
+		}
+
+	}
+	
+	/**
+	 * Vedere https://github.com/tumblr/jumblr per l'api usata. 
+	 * L'url del tumblr è https://www.tumblr.com/blog/gemmed-match-point.
+	 * @param t
+	 */
+	private void postTumblr(Torneo t)
+	{
+		// Authenticate via OAuth
+		JumblrClient client = new JumblrClient(
+		  "Qh91mAey1fne489Y5YFwr7Xr5gbZkanvIPw1ah6WWAbLo2EB20",
+		  "T6hdiqLe6w0SYINWwO3kuIscYm0lNanbxY9KR4IGrb5Tf9tt06"
+		);
+		client.setToken(
+		  "VrNKJD0sbepWLmNGtJqwzq4s6qc5qd9InX1fv3fgljeAaDZDDz",
+		  "t1RVuseWjRAuG33vstMpHTLDSoIfE9Ft0VyVJ75cLqiiD6FqT5"
+		);
+
+		// Make the request
+		User user = client.user();
+		
+		QuotePost post;
+		try {
+			post = client.newPost("gemmed-match-point", QuotePost.class);
+			post.setText(t.getNome());
+			post.save();
+		} catch (IllegalAccessException e) {
+			log(e.getMessage());
+		} catch (InstantiationException e) {
+			log(e.getMessage());
+		}
+	}
+	
+	private void post(String p)
+	{
+		// Authenticate via OAuth
+		JumblrClient client = new JumblrClient(
+		  "Qh91mAey1fne489Y5YFwr7Xr5gbZkanvIPw1ah6WWAbLo2EB20",
+		  "T6hdiqLe6w0SYINWwO3kuIscYm0lNanbxY9KR4IGrb5Tf9tt06"
+		);
+		client.setToken(
+		  "VrNKJD0sbepWLmNGtJqwzq4s6qc5qd9InX1fv3fgljeAaDZDDz",
+		  "t1RVuseWjRAuG33vstMpHTLDSoIfE9Ft0VyVJ75cLqiiD6FqT5"
+		);
+
+		// Make the request
+		User user = client.user();
+		
+		QuotePost post;
+		try {
+			post = client.newPost("gemmed-match-point", QuotePost.class);
+			post.setText(p);
+			post.save();
+		} catch (IllegalAccessException e) {
+			log(e.getMessage());
+		} catch (InstantiationException e) {
+			log(e.getMessage());
+		}
+	}
+
+}

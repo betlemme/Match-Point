@@ -1,0 +1,59 @@
+package it.gemmed.servlet;
+
+import it.gemmed.database.FindArbitroDatabase;
+import it.gemmed.database.FindPartitaDatabase;
+import it.gemmed.database.FindPlayerDatabase;
+import it.gemmed.database.FindTorneoDatabase;
+import it.gemmed.resource.Arbitro;
+import it.gemmed.resource.Giocatore;
+import it.gemmed.resource.Message;
+import it.gemmed.resource.PartitaSingola;
+import it.gemmed.resource.Torneo;
+import it.gemmed.resource.Circolo;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+@SuppressWarnings("serial")
+public class ProfiloTorneoArbitroServlet extends AbstractDatabaseServlet {
+	protected void doGet(HttpServletRequest req, HttpServletResponse res)
+			throws ServletException, IOException {
+
+		
+		int id;
+		Torneo torneo = null;
+		Message m = null;
+		List<Giocatore> l = null;
+		List<PartitaSingola> p = null;
+		Arbitro a = null;
+		
+		try {
+			id = Integer.parseInt(req.getParameter("id"));
+			torneo = new FindTorneoDatabase(DS.getConnection()).findTorneo(id);
+			l = new FindPlayerDatabase(DS.getConnection()).findPlayerByTorneo(id);
+			p = new FindPartitaDatabase(DS.getConnection()).findPartite(id);
+			a = new FindArbitroDatabase(DS.getConnection()).findArbitro(torneo.getArbitro());
+			
+			
+			m = new Message("Employees successfully searched.");
+		}  catch (NumberFormatException ex) {
+			log(ex.getMessage());
+		} catch (SQLException ex) {
+			log(ex.getMessage());
+		}
+			req.setAttribute("torneo", torneo);
+			req.setAttribute("giocatori", l);
+			req.setAttribute("partite", p);
+			req.setAttribute("arbitro", a);
+			req.getRequestDispatcher("/jsp/profilo-torneo-arbitro.jsp").forward(req, res);
+		 
+
+	}
+
+}

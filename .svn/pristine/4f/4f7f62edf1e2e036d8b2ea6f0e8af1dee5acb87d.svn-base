@@ -1,0 +1,124 @@
+package it.gemmed.servlet;
+
+import it.gemmed.database.CreatePlayerDatabase;
+import it.gemmed.database.FindPlayerDatabase;
+import it.gemmed.database.UpdateGiocatoreDatabase;
+import it.gemmed.resource.Giocatore;
+import it.gemmed.resource.Message;
+
+import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Creates a new employee into the database. 
+ * 
+ * @author Nicola Ferro
+ * @version 1.00
+ */
+@SuppressWarnings("serial")
+public class GestioneGiocatoriServlet extends AbstractDatabaseServlet {
+
+	/**
+	 * Creates a new employee into the database. 
+	 * 
+	 * @param req
+	 *            the HTTP request from the client.
+	 * @param res
+	 *            the HTTP response from the server.
+	 * 
+	 * @throws ServletException
+	 *             if any error occurs while executing the servlet.
+	 * @throws IOException
+	 *             if any error occurs in the client/server communication.
+	 */
+	public void doPost(HttpServletRequest req, HttpServletResponse res)
+			throws ServletException, IOException {
+		String azione = req.getParameter("azione");
+		
+		if(azione.equals("tessera")) {
+			String email = req.getParameter("email");
+			String tessera = req.getParameter("tessera");
+			Date scadenza = Date.valueOf(req.getParameter("data_scadenza"));
+			try {
+				Giocatore p = new FindPlayerDatabase(DS.getConnection()).findPlayerByEmail(email);
+				p.setTessera(tessera);
+				p.setScadenza_tessera(scadenza);
+				new UpdateGiocatoreDatabase(DS.getConnection(), p).updateGiocatore();
+				
+				req.getRequestDispatcher("/profiloFederazione").forward(req, res);
+/*				
+			    res.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
+			    res.setCharacterEncoding("UTF-8"); // You want world domination, huh?
+			    res.getWriter().write("ok");       // Write response body.
+*/			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if(azione.equals("crea")) {
+			// request parameters
+			String nome = null;
+			String cognome = null;
+			Date data_nascita = null;
+			String email = null;
+			String password = null;
+			boolean ismaschio;
+			
+			// model
+			Giocatore p  = null;
+			Message m = null;
+
+			try{
+				// retrieves the request parameters
+				nome = req.getParameter("nome");
+				cognome = req.getParameter("cognome");
+				data_nascita = Date.valueOf(req.getParameter("data_nascita"));
+				email = req.getParameter("email");
+				password = req.getParameter("password");
+				String sex = req.getParameter("sex");
+				if(sex.equals("maschio"))
+					ismaschio = true;
+				else
+					ismaschio = false;
+					
+
+				// creates a new employee from the request parameters
+				p = new Giocatore(nome, cognome, data_nascita, email, password, ismaschio);
+
+				// creates a new object for accessing the database and stores the employee
+				new CreatePlayerDatabase(DS.getConnection(), p).createEmployee();
+				
+				m = new Message("Giocatore successfully created.");
+
+			} catch (NumberFormatException ex) {
+				m = new Message("Cannot create the employee. Invalid input parameters: identifier, age, and salary must be integer.", 
+						"E100", ex.getMessage());
+			} catch (SQLException ex) {
+//				if (e
+//						.getSQLState()
+//						.equals("23505")) {
+//					m = new Message("Cannot create the employee: employee  already exists.", 
+//							"E300", ex.getMessage());
+//				} else {
+					m = new Message("Cannot create the employee: unexpected error while accessing the database.", 
+							"E200", ex.getMessage());
+//				}
+			}
+			
+			// stores the employee and the message as a request attribute
+			req.setAttribute("giocatore", p);
+			req.setAttribute("message", m);
+			
+			// forwards the control to the createEmployeeResult JSP
+			req.getRequestDispatcher("/login?tipo=player").forward(req, res);
+		}
+
+	}
+
+}

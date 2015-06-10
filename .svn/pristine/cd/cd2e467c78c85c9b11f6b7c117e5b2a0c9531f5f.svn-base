@@ -1,0 +1,157 @@
+package it.gemmed.resource;
+
+import java.sql.Date;
+
+/**
+ * Dati relativi a un torneo
+ * @author manuel
+ *
+ */
+public class Torneo {
+	private final String nome;
+	private final Date data_inizio;
+	private final Date data_fine;
+	private String categoria;
+	// Farlo auto-increment?
+	private int id;
+	private final String circolo;
+	private final String tipologia;
+	private String arbitro;
+	private String federazione;
+	private String convalidato = null;
+	/**
+	 * @param convalidato the convalidato to set
+	 */
+	public void setConvalidato(String convalidato) {
+		this.convalidato = convalidato;
+	}
+	/**
+	 * Costruttore senza id, da usare solo durante la creazione del torneo
+	 * 
+	 * @param nome
+	 * @param data_inizio
+	 * @param data_fine
+	 * @param id
+	 * @param circolo
+	 * @param tipologia
+	 * @param convalidato
+	 */
+	public Torneo(String nome, Date data_inizio, Date data_fine,
+			String circolo, String tipologia, String convalidato) {
+		super();
+		this.nome = nome;
+		this.data_inizio = data_inizio;
+		this.data_fine = data_fine;
+		this.circolo = circolo;
+		this.tipologia = tipologia;
+		this.convalidato = convalidato;
+	}
+	
+	/**
+	 * Costruttore con tutti i campi, da usare quando si cerca
+	 * @param nome
+	 * @param data_inizio
+	 * @param data_fine
+	 * @param categoria
+	 * @param id
+	 * @param circolo
+	 * @param tipologia
+	 * @param arbitro
+	 * @param federazione
+	 * @param convalidato
+	 */
+	public Torneo(String nome, Date data_inizio, Date data_fine,
+			String categoria, int id, String circolo, String tipologia,
+			String arbitro, String federazione, String convalidato) {
+		super();
+		this.nome = nome;
+		this.data_inizio = data_inizio;
+		this.data_fine = data_fine;
+		this.categoria = categoria;
+		this.id = id;
+		this.circolo = circolo;
+		this.tipologia = tipologia;
+		this.arbitro = arbitro;
+		this.federazione = federazione;
+		this.convalidato = convalidato;
+	}
+	/**
+	 * @return the categoria
+	 */
+	public String getCategoria() {
+		return categoria;
+	}
+	/**
+	 * @param categoria the categoria to set
+	 */
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
+	}
+	/**
+	 * @return the arbitro
+	 */
+	public String getArbitro() {
+		return arbitro;
+	}
+	/**
+	 * @param arbitro the arbitro to set
+	 */
+	public void setArbitro(String arbitro) {
+		this.arbitro = arbitro;
+	}
+	/**
+	 * @return the federazione
+	 */
+	public String getFederazione() {
+		return federazione;
+	}
+	/**
+	 * @param federazione the federazione to set
+	 */
+	public void setFederazione(String federazione) {
+		this.federazione = federazione;
+	}
+	/**
+	 * @return the nome
+	 */
+	public String getNome() {
+		return nome;
+	}
+	/**
+	 * @return the data_inizio
+	 */
+	public Date getData_inizio() {
+		return data_inizio;
+	}
+	/**
+	 * @return the data_fine
+	 */
+	public Date getData_fine() {
+		return data_fine;
+	}
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+	/**
+	 * @return the circolo
+	 */
+	public String getCircolo() {
+		return circolo;
+	}
+	/**
+	 * @return the tipologia
+	 */
+	public String getTipologia() {
+		return tipologia;
+	}
+	/**
+	 * @return the convalidato
+	 */
+	public String getConvalidato() {
+		return convalidato;
+	}
+	
+}

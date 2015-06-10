@@ -1,0 +1,47 @@
+package it.gemmed.resource;
+
+import it.gemmed.resource.Tiposuperficie;
+
+/**
+ * Rappresenta un campo
+ * @author manuel
+ *
+ */
+public class Campo {
+	private final int numero;
+	private final Tiposuperficie superficie;
+	private final String circolo;
+	
+	/**
+	 * @param numero
+	 * @param superficie
+	 * @param circolo
+	 */
+	public Campo(int numero, Tiposuperficie superficie, String circolo) {
+		super();
+		this.numero = numero;
+		this.superficie = superficie;
+		this.circolo = circolo;
+	}
+
+	/**
+	 * @return the numero
+	 */
+	public int getNumero() {
+		return numero;
+	}
+
+	/**
+	 * @return the superficie
+	 */
+	public Tiposuperficie getSuperficie() {
+		return superficie;
+	}
+
+	/**
+	 * @return the circolo
+	 */
+	public String getCircolo() {
+		return circolo;
+	}
+}

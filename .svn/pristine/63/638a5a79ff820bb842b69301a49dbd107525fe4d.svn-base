@@ -1,0 +1,47 @@
+package it.gemmed.resource;
+
+/**
+ * Rappresenta una squadra di due giocatori
+ * @author manuel
+ *
+ */
+public class Team {
+	private final String idteam;
+	private final String giocatoreA;
+	private final String giocatoreB;
+	
+	/**
+	 * @param idteam
+	 * @param giocatoreA
+	 * @param giocatoreB
+	 */
+	public Team(String idteam, String giocatoreA, String giocatoreB) {
+		super();
+		this.idteam = idteam;
+		this.giocatoreA = giocatoreA;
+		this.giocatoreB = giocatoreB;
+	}
+
+	/**
+	 * @return the idteam
+	 */
+	public String getIdteam() {
+		return idteam;
+	}
+
+	/**
+	 * @return the giocatoreA
+	 */
+	public String getGiocatoreA() {
+		return giocatoreA;
+	}
+
+	/**
+	 * @return the giocatoreB
+	 */
+	public String getGiocatoreB() {
+		return giocatoreB;
+	}
+	
+	
+}

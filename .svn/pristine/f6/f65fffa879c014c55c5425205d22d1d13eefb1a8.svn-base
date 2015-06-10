@@ -1,0 +1,233 @@
+package it.gemmed.database;
+
+import it.gemmed.resource.Giocatore;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class FindPlayerDatabase {
+	/**
+	 * The SQL statement to be executed
+	 */
+	private static final String STATEMENT_EMAIL = "SELECT * FROM giocatore WHERE email=?";
+	/**
+	 * The SQL statement to be executed
+	 */
+	private static final String STATEMENT_NOME = "SELECT * FROM giocatore WHERE nome=?";
+	/**
+	 * The SQL statement to be executed
+	 */
+	private static final String STATEMENT_TESSERA = "SELECT * FROM giocatore WHERE tessera=?";
+	/**
+	 * The SQL statement to be executed
+	 */
+	private static final String STATEMENT_COGNOME = "SELECT * FROM giocatore WHERE cognome=?";
+	/**
+	 * The SQL statement to be executed
+	 */
+	private static final String STATEMENT_ALL = "SELECT * FROM giocatore";
+
+	/**
+	 * The connection to the database
+	 */
+	private final Connection con;
+
+	/**
+	 * The results of the search.
+	 */
+	private final List<Giocatore> giocatori;
+
+	/**
+	 * Creates a new object for storing an employee into the database.
+	 * 
+	 * @param con
+	 *            the connection to the database.
+	 * @param player
+	 *            the player to be stored into the database.
+	 */
+	public FindPlayerDatabase(final Connection con) {
+		this.con = con;
+		this.giocatori = new ArrayList<Giocatore>();
+	}
+
+	/**
+	 * Cerca tutti i giocatori
+	 * @return 
+	 * 
+	 * @throws SQLException
+	 *             if any error occurs while storing the employee.
+	 */
+	public List<Giocatore> findPlayer() throws SQLException {
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			pstmt = con.prepareStatement(STATEMENT_ALL);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				giocatori.add(new Giocatore(rs.getString("nome"), rs
+						.getString("cognome"), rs.getDate("data_nascita"), rs.getString("indirizzo"),
+						rs.getString("telefono"),rs.getString("email"), rs.getString("password"),
+						rs.getString("tessera"), rs.getDate("scadenza_tessera"), rs.getString("classifica"), rs.getString("circolo")));
+			}
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			
+			if (pstmt != null) {
+				pstmt.close();
+			}
+
+			con.close();
+		}
+		return giocatori;
+
+	}	
+	
+	/**
+	 * Cerca per email
+	 * @return
+	 * @throws SQLException
+	 */
+	public Giocatore findPlayerByEmail(String email) throws SQLException {
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			pstmt = con.prepareStatement(STATEMENT_EMAIL);
+			pstmt.setString(1, email);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				giocatori.add(new Giocatore(rs.getString("nome"), rs
+						.getString("cognome"), rs.getDate("data_nascita"), rs.getString("indirizzo"),
+						rs.getString("telefono"),rs.getString("email"), rs.getString("password"),
+						rs.getString("tessera"), rs.getDate("scadenza_tessera"), rs.getString("classifica"), rs.getString("circolo")));
+			}
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			
+			if (pstmt != null) {
+				pstmt.close();
+			}
+
+			con.close();
+		}
+		return giocatori.get(0);
+
+	}	
+	
+	public List<Giocatore> findPlayerByNome(String nome) throws SQLException {
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			pstmt = con.prepareStatement(STATEMENT_NOME);
+			pstmt.setString(1, nome);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				giocatori.add(new Giocatore(rs.getString("nome"), rs
+						.getString("cognome"), rs.getDate("data_nascita"), rs.getString("indirizzo"),
+						rs.getString("telefono"),rs.getString("email"), rs.getString("password"),
+						rs.getString("tessera"), rs.getDate("scadenza_tessera"), rs.getString("classifica"), rs.getString("circolo")));
+			}
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			
+			if (pstmt != null) {
+				pstmt.close();
+			}
+
+			con.close();
+		}
+		return giocatori;
+
+	}	
+	
+	public List<Giocatore> findPlayerByCognome(String cognome) throws SQLException {
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			pstmt = con.prepareStatement(STATEMENT_COGNOME);
+			pstmt.setString(1, cognome);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				giocatori.add(new Giocatore(rs.getString("nome"), rs
+						.getString("cognome"), rs.getDate("data_nascita"), rs.getString("indirizzo"),
+						rs.getString("telefono"),rs.getString("email"), rs.getString("password"),
+						rs.getString("tessera"), rs.getDate("scadenza_tessera"), rs.getString("classifica"), rs.getString("circolo")));
+			}
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			
+			if (pstmt != null) {
+				pstmt.close();
+			}
+
+			con.close();
+		}
+		return giocatori;
+
+	}	
+	
+	public List<Giocatore> findPlayerByTessera(String tessera) throws SQLException {
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			pstmt = con.prepareStatement(STATEMENT_TESSERA);
+			pstmt.setString(1, tessera);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				giocatori.add(new Giocatore(rs.getString("nome"), rs
+						.getString("cognome"), rs.getDate("data_nascita"), rs.getString("indirizzo"),
+						rs.getString("telefono"),rs.getString("email"), rs.getString("password"),
+						rs.getString("tessera"), rs.getDate("scadenza_tessera"), rs.getString("classifica"), rs.getString("circolo")));
+			}
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			
+			if (pstmt != null) {
+				pstmt.close();
+			}
+
+			con.close();
+		}
+		return giocatori;
+
+	}	
+
+}

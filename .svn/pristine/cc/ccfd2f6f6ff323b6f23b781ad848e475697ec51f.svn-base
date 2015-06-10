@@ -1,0 +1,37 @@
+package it.gemmed.resource;
+
+public class UtenteFederale {
+	private final String email;
+	private String password;
+	
+	/**
+	 * @param email
+	 * @param password
+	 */
+	public UtenteFederale(String email, String password) {
+		super();
+		this.email = email;
+		this.password = password;
+	}
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+	/**
+	 * @param the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+}
